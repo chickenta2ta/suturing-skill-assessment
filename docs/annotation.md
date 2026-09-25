@@ -31,6 +31,15 @@ id は COCO や AVA と同様に、1 始まりの整数 id と名前の文字列
 - needle_entry で刺入中になり、4 か 5 のどちらかで組織外に戻る
 - needle_reposition は組織外でのみ付ける
 
+オクルージョンで瞬間が見えない場合は、見えない間を「刺入中」「両手で把持中」とみなし、以下に付ける。
+
+| event | 付けるフレーム |
+|---|---|
+| needle_reposition_start | 片手で把持していると確認できた最後のフレーム |
+| needle_reposition_end | 片手で把持していると確認できた最初のフレーム |
+| needle_entry | 組織外にあると確認できた最後のフレーム |
+| needle_withdrawal_end / needle_retraction_end | 組織外にあると確認できた最初のフレーム |
+
 ## 観測区間
 
 1針は needle_withdrawal_end で終わる。その直前の needle_entry を、その針の刺入とする。
