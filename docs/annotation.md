@@ -57,3 +57,34 @@ reposition_start → reposition_end → entry → retraction_end
 | Wrist Rotation | needle_entry 〜 needle_withdrawal_end |
 
 - Needle Hold 系は reposition 後に値が確定するため、区間内のどのフレームで計測してもよい
+
+## フォーマット
+
+COCO と同様に、データセット全体を 1 つの JSON で持つ。
+
+```json
+{
+  "event_categories": [
+    {"id": 1, "name": "needle_reposition_start"}
+  ],
+  "videos": [
+    {"id": 1, "file_name": "Suturing_B001_capture1.avi",
+     "width": 640, "height": 480, "fps": 30, "num_frames": 5640}
+  ],
+  "events": [
+    {"id": 1, "video_id": 1, "category_id": 1, "frame_index": 371}
+  ],
+  "stitches": [
+    {"id": 1, "video_id": 1,
+     "entry_event_id": 7, "withdrawal_end_event_id": 8,
+     "ease_scores": {"needle_hold_ratio": 3, "needle_hold_angle": 2,
+                     "depth_of_needle_hold": 3, "wrist_rotation": null}}
+  ]
+}
+```
+
+- `id` は整数で、ファイル全体で一意
+- `frame_index`: 元の avi を OpenCV（`cv2.VideoCapture`）で先頭から `read()` した順番（0 始まり）。JIGSAWS のジェスチャーラベル・キネマティクスのフレーム番号とは一致しない
+- 観測区間はデータに持たず、観測区間の規則から計算する
+- `wrist_rotation` は needle_entry 〜 needle_withdrawal_end を見て 1 つ付ける
+- 評価できない場合は `null`
