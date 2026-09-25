@@ -35,6 +35,13 @@ id は COCO や AVA と同様に、1 始まりの整数 id と名前の文字列
 
 1針は needle_withdrawal_end で終わる。その直前の needle_entry を、その針の刺入とする。
 
+途中で引き戻した場合の例（`*` がその針の刺入）:
+
+```
+reposition_start → reposition_end → entry → retraction_end
+→ reposition_start → reposition_end → entry* → withdrawal_end
+```
+
 | Sub-Skill | 観測区間 |
 |---|---|
 | Needle Hold Ratio / Needle Hold Angle / Depth of Needle Hold | 直前の needle_reposition_end 〜 needle_entry |
