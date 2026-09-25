@@ -1,0 +1,47 @@
+{
+  "event_categories": [
+    {"id": 1, "name": "needle_reposition_start"},
+    {"id": 2, "name": "needle_reposition_end"},
+    {"id": 3, "name": "needle_entry"},
+    {"id": 4, "name": "needle_withdrawal_end"},
+    {"id": 5, "name": "needle_retraction_end"}
+  ],
+  "videos": [
+    {"id": 1, "file_name": "Suturing_B001_capture1.avi",
+     "width": 640, "height": 480, "fps": 30, "num_frames": 5640}
+  ],
+  "events": [
+    {"id": 1, "video_id": 1, "category_id": 1, "frame_index": 374},
+    {"id": 2, "video_id": 1, "category_id": 2, "frame_index": 485},
+    {"id": 3, "video_id": 1, "category_id": 1, "frame_index": 548},
+    {"id": 4, "video_id": 1, "category_id": 2, "frame_index": 603},
+    {"id": 5, "video_id": 1, "category_id": 3, "frame_index": 700},
+    {"id": 6, "video_id": 1, "category_id": 5, "frame_index": 956},
+    {"id": 7, "video_id": 1, "category_id": 1, "frame_index": 994},
+    {"id": 8, "video_id": 1, "category_id": 2, "frame_index": 1112},
+    {"id": 9, "video_id": 1, "category_id": 3, "frame_index": 1200},
+    {"id": 10, "video_id": 1, "category_id": 5, "frame_index": 1404},
+    {"id": 11, "video_id": 1, "category_id": 1, "frame_index": 1447},
+    {"id": 12, "video_id": 1, "category_id": 2, "frame_index": 1570},
+    {"id": 13, "video_id": 1, "category_id": 1, "frame_index": 1620},
+    {"id": 14, "video_id": 1, "category_id": 2, "frame_index": 1702},
+    {"id": 15, "video_id": 1, "category_id": 3, "frame_index": 1916},
+    {"id": 16, "video_id": 1, "category_id": 5, "frame_index": 1996},
+    {"id": 17, "video_id": 1, "category_id": 3, "frame_index": 2096},
+    {"id": 18, "video_id": 1, "category_id": 4, "frame_index": 2337},
+    {"id": 19, "video_id": 1, "category_id": 1, "frame_index": 2582},
+    {"id": 20, "video_id": 1, "category_id": 2, "frame_index": 2691},
+    {"id": 21, "video_id": 1, "category_id": 3, "frame_index": 2736},
+    {"id": 22, "video_id": 1, "category_id": 4, "frame_index": 3087}
+  ],
+  "stitches": [
+    {"id": 1, "video_id": 1,
+     "entry_event_id": 17, "withdrawal_end_event_id": 18,
+     "ease_scores": {"needle_hold_ratio": null, "needle_hold_angle": null,
+                     "depth_of_needle_hold": null, "wrist_rotation": null}},
+    {"id": 2, "video_id": 1,
+     "entry_event_id": 21, "withdrawal_end_event_id": 22,
+     "ease_scores": {"needle_hold_ratio": null, "needle_hold_angle": null,
+                     "depth_of_needle_hold": null, "wrist_rotation": null}}
+  ]
+}
