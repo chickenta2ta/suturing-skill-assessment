@@ -37,11 +37,13 @@
   "stitches": [
     {"id": 1, "video_id": 1,
      "entry_event_id": 17, "withdrawal_end_event_id": 18,
-     "ease_scores": {"needle_hold_ratio": null, "needle_hold_angle": null,
-                     "depth_of_needle_hold": null, "wrist_rotation": null}},
+     "ease_scores": {"needle_repositions": null, "needle_hold_ratio": null,
+                     "needle_hold_angle": null, "depth_of_needle_hold": null,
+                     "wrist_rotation": null}},
     {"id": 2, "video_id": 1,
      "entry_event_id": 21, "withdrawal_end_event_id": 22,
-     "ease_scores": {"needle_hold_ratio": null, "needle_hold_angle": null,
-                     "depth_of_needle_hold": null, "wrist_rotation": null}}
+     "ease_scores": {"needle_repositions": null, "needle_hold_ratio": null,
+                     "needle_hold_angle": null, "depth_of_needle_hold": null,
+                     "wrist_rotation": null}}
   ]
 }

@@ -8,6 +8,7 @@ JIGSAWS の Suturing（https://cirl.lcsr.jhu.edu/research/hmm/datasets/jigsaws_r
 
 EASE（Haque et al., Urol Pract 2023）のうち、以下を評価する。
 
+- Needle Repositions
 - Needle Hold Ratio
 - Needle Hold Angle
 - Depth of Needle Hold
@@ -53,9 +54,12 @@ reposition_start → reposition_end → entry → retraction_end
 
 | Sub-Skill | 観測区間 |
 |---|---|
+| Needle Repositions | 前の針の needle_withdrawal_end（1針目は動画開始）〜 needle_entry |
 | Needle Hold Ratio / Needle Hold Angle / Depth of Needle Hold | 直前の needle_reposition_end 〜 needle_entry |
 | Wrist Rotation | needle_entry 〜 needle_withdrawal_end |
 
+- 表中の needle_entry は、その針の刺入（例の `*`）を指す
+- Needle Repositions は、区間内の needle_reposition_start の数で評価する
 - Needle Hold 系は reposition 後に値が確定するため、区間内のどのフレームで計測してもよい
 
 ## フォーマット
@@ -77,8 +81,9 @@ COCO と同様に、データセット全体を 1 つの JSON で持つ。
   "stitches": [
     {"id": 1, "video_id": 1,
      "entry_event_id": 7, "withdrawal_end_event_id": 8,
-     "ease_scores": {"needle_hold_ratio": 3, "needle_hold_angle": 2,
-                     "depth_of_needle_hold": 3, "wrist_rotation": null}}
+     "ease_scores": {"needle_repositions": 2, "needle_hold_ratio": 3,
+                     "needle_hold_angle": 2, "depth_of_needle_hold": 3,
+                     "wrist_rotation": null}}
   ]
 }
 ```
