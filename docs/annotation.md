@@ -4,6 +4,11 @@
 
 JIGSAWS の Suturing（https://cirl.lcsr.jhu.edu/research/hmm/datasets/jigsaws_release/）
 
+人単位で分ける。熟練度と GRS がばらけるように選んだ。
+
+- 開発用（学習・ハイパラ調整）: B, C, E
+- テスト用: D, F, G, H, I
+
 ## 評価対象の Sub-Skill
 
 EASE（Haque et al., Urol Pract 2023）のうち、以下を評価する。
