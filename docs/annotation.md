@@ -4,10 +4,10 @@
 
 JIGSAWS の Suturing（https://cirl.lcsr.jhu.edu/research/hmm/datasets/jigsaws_release/）
 
-人単位で分ける。熟練度と GRS がばらけるように選んだ。
+人単位で 4 人ずつに分ける。どちらも熟練度（自己申告）が熟練者 1・中級者 1・初心者 2 で、GRS の分布が近くなるように選んだ。
 
-- 開発用（学習・ハイパラ調整）: B, C, E
-- テスト用: D, F, G, H, I
+- 開発用（few-shot の例・ロジック開発・ハイパラ調整）: B, E, F, I
+- テスト用: C, D, G, H
 
 ## 評価対象の Sub-Skill
 
