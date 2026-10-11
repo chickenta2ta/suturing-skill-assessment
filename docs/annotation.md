@@ -46,6 +46,25 @@ id は COCO や AVA と同様に、1 始まりの整数 id と名前の文字列
 | needle_entry | 組織外にあると確認できた最後のフレーム |
 | needle_withdrawal_end / needle_retraction_end | 組織外にあると確認できた最初のフレーム |
 
+## Keypoint
+
+針に 3 点、器具に 4 点を付ける。器具は見えている 2 本ともに付ける。
+名前は COCO と同様に小文字と下線で書き、器具の点は Du et al.（IEEE TMI 2018）の名前に、針の点は Chiu et al.（IROS 2022）・PinPoint（2026）の名前に合わせる。
+
+| name | 対象 | 定義 |
+|---|---|---|
+| needle_tip | 針 | 針先 |
+| needle_grasp | 針 | 顎が針を挟んでいる区間の中心 |
+| needle_tail | 針 | 針のお尻（糸の付け根） |
+| left_clasper | 器具 | 2 枚の顎のうち、画面上で左にある顎の先端 |
+| right_clasper | 器具 | 2 枚の顎のうち、画面上で右にある顎の先端 |
+| head | 器具 | 顎の付け根（2 枚の顎が開閉する関節） |
+| shaft | 器具 | シャフトの先の端（黒いシャフトと金属の手首の境目）の、シャフトの幅の中心 |
+
+- 左右は画面上の x 座標で決める。2 つの顎の先端の x 座標が同じときは、上（y 座標が小さい方）を left_clasper とする
+- 隠れて見えない点は付けない（位置を推定しない）
+- Du et al. の 5 点のうち end（シャフトの根元側）は、head と shaft で器具の向きが決まるため付けない
+
 ## 観測区間
 
 1針は needle_withdrawal_end で終わる。その直前の needle_entry を、その針の刺入とする。
