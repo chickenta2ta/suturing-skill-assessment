@@ -9,14 +9,15 @@ Needle Hold Angle・Needle Hold Ratio・Depth of Needle Hold を、keypoint（an
 
 ## フレームごとの値
 
-持つ器具は、needle_grasp が付いているフレームで、2 つの顎の先端の中点が needle_grasp に近い方の器具とする。
+持つ器具は、grasp が付いている器具とする。2 本とも grasp が付いているフレーム（持ち直しの最中）は使わない。
+c は 2 つの顎の先端（clasper_1, clasper_2）の中点。
 項目ごとに、必要な点がすべて付いているフレームだけで測る。
 
 | 項目 | 必要な点 | 値 |
 |---|---|---|
-| Needle Hold Angle | needle_grasp, needle_tip, head, shaft | needle_grasp → needle_tip の向きと、head → shaft の向き（器具の根元向き）のなす角（0〜180 度） |
-| Needle Hold Ratio | needle_tip, needle_grasp, needle_tail | 3 点を通る円の上で、needle_tip → needle_grasp の弧の長さ / needle_tip → needle_tail の弧の長さ |
-| Depth of Needle Hold | left_clasper, right_clasper, needle_grasp, head | 2 つの顎の先端の中点 c から needle_grasp へのベクトルを、c → head の向きに射影した長さ / c と head の距離 |
+| Needle Hold Angle | grasp, needle_tip, clasper_1, clasper_2, head | grasp → needle_tip の向きと、c → head の向き（顎に沿って根元へ向かう向き）のなす角（0〜180 度） |
+| Needle Hold Ratio | needle_tip, grasp, needle_tail | 3 点を通る円の上で、needle_tip → grasp の弧の長さ / needle_tip → needle_tail の弧の長さ |
+| Depth of Needle Hold | clasper_1, clasper_2, grasp, head | c から grasp へのベクトルを、c → head の向きに射影した長さ / c と head の距離 |
 
 - Ratio は 0 で針先、1 でお尻を持つ。3 点がほぼ一直線のときは直線上の長さの比になる
 - Depth は 0 で顎の先端、1 で顎の付け根を持つ
@@ -27,7 +28,7 @@ Needle Hold Angle・Needle Hold Ratio・Depth of Needle Hold を、keypoint（an
 
 | 項目 | 長さ |
 |---|---|
-| Needle Hold Angle | needle_grasp と needle_tip の距離 × head と shaft の距離 |
+| Needle Hold Angle | grasp と needle_tip の距離 × c と head の距離 |
 | Needle Hold Ratio | needle_tip と needle_tail の距離 |
 | Depth of Needle Hold | c と head の距離 |
 
