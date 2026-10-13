@@ -104,7 +104,40 @@ others.
 \subsection{Needle Hold Angle}
 \label{ssec:angle}
 
-\placeholder{Angle lifted to 3D with depth priors.}
+EASE illustrates the hold angle as the angle between the needle, from the
+grasp point toward the tip, and the jaws. It gives 3 for 90--135$^\circ$, 2
+for up to 150$^\circ$, and 1 otherwise. This is an angle in 3D. The angle
+seen in the image changes whenever the instrument or the needle tilts, for
+example as the needle is turned toward the tissue before entry, even though
+the hold itself does not change. A 2D angle therefore measures the view as
+much as the hold.
+
+We recover the 3D angle from the monocular video, based on one simple fact:
+projection can only shorten a segment. The needle segment
+$\mathbf{u}_t=\mathbf{p}_{\mathrm{tip}}-\mathbf{p}_{\mathrm{grasp}}$ keeps its
+3D length throughout the hold window, and the jaw segment
+$\mathbf{v}_t=\mathbf{p}_{\mathrm{base}}-\mathbf{p}_{\mathrm{jaw}}$ keeps its
+length throughout the video. Their true lengths $L_u$ and $L_v$ are thus
+revealed by the frames in which they appear longest, and we take a high
+percentile of their image lengths, over the hold window for the needle and
+over all hold windows of the video for the jaws. Under weak perspective, how
+much shorter a segment appears gives the size of its depth component, and the
+viewing geometry gives its sign: the camera looks down on the pad, so the
+needle tip, pointing toward the tissue, is farther than the grasp point, and
+the jaw base is nearer than the jaw tip. Each segment is lifted to 3D as
+\begin{equation}
+\begin{aligned}
+\tilde{\mathbf{u}}_t&=\Bigl(\mathbf{u}_t,\,
+\sqrt{\max(0,L_u^2-\|\mathbf{u}_t\|^2)}\Bigr),\\
+\tilde{\mathbf{v}}_t&=\Bigl(\mathbf{v}_t,\,
+-\sqrt{\max(0,L_v^2-\|\mathbf{v}_t\|^2)}\Bigr),
+\end{aligned}
+\label{eq:lift}
+\end{equation}
+and the hold angle $\alpha_i$ is the median over the frames of the angle
+between $\tilde{\mathbf{u}}_t$ and $\tilde{\mathbf{v}}_t$. No depth sensor,
+depth estimation network, or camera calibration is involved; the 3D angle
+follows from how much the needle and the jaws shrink in the image.
 
 \subsection{Depth of Needle Hold}
 \label{ssec:depth}
