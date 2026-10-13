@@ -149,4 +149,17 @@ follows from how much the needle and the jaws shrink in the image.
 \subsection{Depth of Needle Hold}
 \label{ssec:depth}
 
-\placeholder{Depth from the longest-jaw frame.}
+EASE asks how deep in the jaws the needle is held; holding it near the jaw tip
+is best. We measure the depth $d_i$ as the position of the grasp point along
+the jaws, 0 at the jaw tip and 1 at the jaw base, and give 3 for
+$d_i\leq1/4$, 2 for $d_i\leq1/2$, and 1 otherwise.
+
+Unlike the angle, the depth needs no 3D lifting: under weak perspective, a
+ratio of lengths along a line is the same in the image as in 3D. The
+difficulty is rather in which frame to read it from. When the jaws point
+toward the camera, they appear only a few pixels long, and a small keypoint
+error becomes a large error in the depth. Unlike prior work~\cite{Deo2026}, we
+do not train a detector on annotated ideal frames to pick the frame. Since the
+hold does not change until entry, every frame of the window shows the same
+depth, so we simply read it from the frame in which the jaws appear longest,
+that is, the least foreshortened view.
