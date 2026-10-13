@@ -1,0 +1,78 @@
+\section{Method}
+\label{sec:method}
+
+\subsection{Event-guided assessment framework}
+\label{ssec:framework}
+
+Our goal is to assess EASE needle-handling sub-skills from a suturing video
+alone. Each sub-skill, however, refers to a different part of a stitch. Needle
+Repositions concerns how the needle is prepared for the next stitch, whereas
+Needle Hold Ratio, Needle Hold Angle, and Depth of Needle Hold concern how the
+needle is held when it is driven into the tissue. Scoring a whole video, or a
+whole stitch, therefore mixes in frames that are irrelevant to the sub-skill.
+We instead detect events that delimit each stitch, and assess each sub-skill
+only within the interval it refers to.
+
+A stitch generally proceeds as follows. After the previous needle has left the
+tissue, the surgeon passes the needle between the two instruments to prepare
+for the next stitch. The last of these repositions fixes the hold, which is
+kept until the needle enters the tissue. We detect the five types of events
+in Table~\ref{tab:events}, each an instant in the video. A stitch ends at a
+withdrawal end, and its entry $e_i$ is the last entry before it; a retraction
+does not end the stitch.
+
+\begin{table}[htb]
+\centering
+\small
+\caption{Event types.}
+\label{tab:events}
+\begin{tabular}{@{}ll@{}}
+\hline
+Event & Definition \\
+\hline
+Reposition start & Both instruments grasp the needle outside tissue \\
+Reposition end & One instrument releases the needle \\
+Entry & The needle tip enters the tissue \\
+Withdrawal end & The needle leaves the tissue on the far side \\
+Retraction end & The needle is pulled back out on the entry side \\
+\hline
+\end{tabular}
+\end{table}
+
+Two observation windows follow from these events (Fig.~\ref{fig:overview}). The reposition
+window $R_i=(w_{i-1},e_i]$ spans from the previous withdrawal end $w_{i-1}$
+(the start of the video for the first stitch) to the entry. The hold window
+$W_i=[a_i,e_i]$ starts at the last reposition end $a_i$ in $R_i$, or at
+$w_{i-1}$ if there is none. Since the hold does not change until entry, the
+hold sub-skills can be measured from any frame in $W_i$. Following EASE,
+Needle Repositions is scored from the number $n_i$ of reposition starts in
+$R_i$: 3, 2, and 1 for $n_i\leq2$, $n_i=3$, and $n_i\geq4$, respectively.
+
+\subsection{Per-frame observations}
+\label{ssec:observations}
+
+To measure the hold geometrically, each frame in the hold window is given
+keypoints and a needle mask: the needle tip $P$ and tail $T$, the grasp point
+$G$ where the jaws hold the needle, the two jaw tips with midpoint $J$, the
+jaw base $H$, and the needle mask $M$. The framework does not prescribe how
+these are obtained; a detector and a segmentation model trained on local
+annotations would serve equally well. In this work, both the events and the
+per-frame observations are obtained from a general-purpose VLM given a few
+examples, without any training (Sec.~\ref{ssec:implementation}). The
+framework can thus be set up without task-specific training, which should ease
+its transfer to other suturing videos.
+
+\subsection{Needle Hold Ratio}
+\label{ssec:ratio}
+
+\placeholder{Shared circular arc and the grasp position $s_i$.}
+
+\subsection{Needle Hold Angle}
+\label{ssec:angle}
+
+\placeholder{Angle lifted to 3D with depth priors.}
+
+\subsection{Depth of Needle Hold}
+\label{ssec:depth}
+
+\placeholder{Depth from the longest-jaw frame.}
