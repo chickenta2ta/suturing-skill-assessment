@@ -1,6 +1,13 @@
 \section{Method}
 \label{sec:method}
 
+As outlined in Fig.~\ref{fig:overview}, the method divides a suturing video
+into stitches by detecting events, and each stitch into the window that each
+sub-skill refers to. Within these windows, each frame is given keypoints and a
+needle mask, from which the quantities that EASE refers to are measured
+geometrically and converted into scores. Every score thus traces back to a time
+interval, the frames used, and a measured value.
+
 \subsection{Event-guided assessment framework}
 \label{ssec:framework}
 
