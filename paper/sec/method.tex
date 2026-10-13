@@ -52,20 +52,54 @@ $R_i$: 3, 2, and 1 for $n_i\leq2$, $n_i=3$, and $n_i\geq4$, respectively.
 \label{ssec:observations}
 
 To measure the hold geometrically, each frame in the hold window is given
-keypoints and a needle mask: the needle tip $P$ and tail $T$, the grasp point
-$G$ where the jaws hold the needle, the two jaw tips with midpoint $J$, the
-jaw base $H$, and the needle mask $M$. The framework does not prescribe how
-these are obtained; a detector and a segmentation model trained on local
-annotations would serve equally well. In this work, both the events and the
-per-frame observations are obtained from a general-purpose VLM given a few
-examples, without any training (Sec.~\ref{ssec:implementation}). The
-framework can thus be set up without task-specific training, which should ease
-its transfer to other suturing videos.
+keypoints and a needle mask $\mathcal{M}$. The keypoints are the needle tip
+$\mathbf{p}_{\mathrm{tip}}$ and tail $\mathbf{p}_{\mathrm{tail}}$, and, for
+each instrument, the jaw tip $\mathbf{p}_{\mathrm{jaw}}$ (the midpoint of the
+two jaw tips), the jaw base $\mathbf{p}_{\mathrm{base}}$, and, when the jaws
+grip the needle, the grasp point $\mathbf{p}_{\mathrm{grasp}}$. The hold
+sub-skills use the frames in which only one instrument grips the needle. The
+framework does not prescribe how these observations are obtained; a detector
+and a segmentation model trained on local annotations would serve equally
+well. In this work, both the events and the per-frame observations are
+obtained from a general-purpose VLM given a few examples, without any training
+(Sec.~\ref{ssec:implementation}). The framework can thus be set up without
+task-specific training, which should ease its transfer to other suturing
+videos.
 
 \subsection{Needle Hold Ratio}
 \label{ssec:ratio}
 
-\placeholder{Shared circular arc and the grasp position $s_i$.}
+EASE accepts a hold between the 1:1 and the 3/4:1/4 positions along the
+needle, and gives 3 rather than 2 when the grasp position is adjusted to the
+bite, which the position alone does not show. We therefore score it in two
+classes, good (EASE 2--3) and poor (EASE 1), as AutoEASE~\cite{Deo2026} scores
+every sub-skill in two classes. We measure the grasp position $s_i\in[0,1]$,
+the length along the needle from its tip to the grasp point divided by the
+length of the needle (0 at the tip, 1 at the tail). The hold is good when
+$1/2\leq s_i\leq3/4$.
+
+The grasp position cannot be read from the image directly. The needle is
+curved, partly hidden by the jaws, and foreshortened as it tilts, so lengths in
+the image are not lengths along the needle. We instead estimate the needle in
+3D. The needle is modeled as a circular arc with radius $r$ and arc angle
+$\theta$, with the grasp point at $s_i$ along it. In each frame $t$, the arc is
+placed in 3D under weak perspective so that its tip and grasp point project
+onto the observed ones, and is rotated about them so that its projection best
+explains the rest of the observed needle, namely the mask and the tail when it
+is visible. Let $E_t(r,\theta,s_i)$ be the remaining discrepancy in pixels.
+Since one needle is used throughout a video, $r$ and $\theta$ are shared by
+all its stitches and are estimated together with the grasp positions,
+\begin{equation}
+\hat{r},\hat{\theta},\{\hat{s}_i\}=\arg\min_{r,\theta,\{s_i\}}
+\sum_i\frac{1}{|F_i|}\sum_{t\in F_i}E_t(r,\theta,s_i),
+\label{eq:arc}
+\end{equation}
+where $F_i$ is the set of frames of $W_i$ in which the needle tip and mask are
+observed. No needle size, needle shape, or camera calibration is given
+beforehand; everything is estimated from the monocular video alone, and the
+stitches in which the needle is clearly visible constrain its shape for the
+others.
+
 
 \subsection{Needle Hold Angle}
 \label{ssec:angle}
