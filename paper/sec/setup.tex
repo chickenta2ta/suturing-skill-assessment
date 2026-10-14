@@ -4,8 +4,22 @@
 \subsection{Data and annotations}
 \label{ssec:data}
 
-\placeholder{JIGSAWS Suturing, surgeon-disjoint development and test splits,
-EASE labels.}
+We use the Suturing task of the public JIGSAWS dataset~\cite{Gao2014}, recorded
+with the da Vinci Surgical System on a bench-top model. Eight surgeons (B--I),
+with self-reported skill from novice to expert, performed 39 trials in total,
+each consisting of four stitches. JIGSAWS also provides stereo video and robot
+kinematics, but to keep the method applicable to ordinary surgical videos, we
+use only the monocular video from one endoscope camera (capture1).
+
+To rule out leakage, the surgeons are split four and four, each set having one
+expert, one intermediate, and two novices. Everything that involves a choice,
+namely designing the method, selecting the few-shot examples, and tuning
+parameters, is done on the development set (B, E, F, I; 16 trials, 64
+stitches). The test set (C, D, G, H) consists of all 19 trials of its surgeons
+(76 stitches) and is evaluated once, with everything fixed.
+
+A surgeon licensed in Japan annotated the events and the EASE~\cite{Haque2022}
+scores of every stitch, viewing only the same monocular video as the method.
 
 \subsection{Implementation}
 \label{ssec:implementation}
