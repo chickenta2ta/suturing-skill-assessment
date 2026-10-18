@@ -24,11 +24,46 @@ scores of every stitch, viewing only the same monocular video as the method.
 \subsection{Implementation}
 \label{ssec:implementation}
 
-\placeholder{Event detection, keypoints, and needle masks with a VLM given a
-few examples; frame rates.}
+The events, keypoints, and needle masks are all obtained from one
+general-purpose VLM, GPT-6 Astra~\cite{OpenAI2026Astra}
+with medium reasoning effort (\texttt{gpt-6-astra}), used through the OpenAI API
+without any weight update. Each request gives the definitions, a few
+examples, and the frames to annotate, and the answer is returned as a
+structured output. The examples are taken from two other trials of the
+development surgeons, which are used for nothing else, including development.
+For events, the examples are the frames around each type of event in one of
+these trials. The video is processed at 5 fps, 20 s of frames per request,
+together with 10 s of frames on each side as context, in which no events are
+detected, and the events detected so far in the video as temporal
+information. For keypoints and masks, the examples are 20 frames of the other
+trial annotated with keypoints and needle masks, and the video is processed at
+10 fps, 20 frames per request, with the mask returned as polygons.
 
 \subsection{Baselines and metrics}
 \label{ssec:metrics}
 
-\placeholder{Direct VLM grading, simple baselines, AUC, balanced accuracy,
-video bootstrap.}
+As a baseline, the same VLM scores the three hold sub-skills directly. It is
+given the frames of the annotated assessment window at 5 fps with 10 s of
+context on each side, the EASE criteria with notes defining each quantity, and
+three development stitches with their scores as examples, and returns a score,
+the probability of each score, and the value of each quantity. The baseline is
+thus given favorable conditions: human-annotated windows and scored examples.
+
+We evaluate in two settings. With the annotated assessment windows, scoring is
+evaluated apart from event detection and compared with the baseline on the
+same stitches. In the end-to-end setting, the events are also detected, and all
+four sub-skills are scored automatically. To compare with the labels, each
+annotated stitch is paired one to one with the detected stitch whose entry is
+nearest to its annotated entry, within the annotated stitch. Event detection
+is evaluated by F1 with a tolerance of 1 s.
+
+For each sub-skill, we report the AUC of separating the best score (EASE 3;
+for Needle Hold Ratio, 2--3) from the others, as in~\cite{Deo2026}, and the
+balanced accuracy of the score, averaged over the scores present in the
+labels. For the AUC, our method ranks the stitches by the signed margin of the
+measured value to the EASE criterion of the best score, e.g.,
+$\min(\alpha_i-90^\circ,135^\circ-\alpha_i)$ for the angle, and the baseline
+by its probability of the best score. A stitch that cannot be scored counts as
+an error in both metrics. The 95\% confidence intervals are obtained by
+bootstrap resampling of videos, since the stitches of a video are correlated;
+differences between methods are resampled in pairs on the same stitches.

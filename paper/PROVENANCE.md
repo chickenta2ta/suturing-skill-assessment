@@ -1,0 +1,49 @@
+# 論文の数値・事実の出どころ
+
+論文に書いた数値と事実ごとに、何から求めたか（スクリプト・入力・出力、または文献）を記録する。
+数値を本文に入れたら、同じ変更でここにも追記する。`data/` は git 対象外（古いリポのローカル）。
+
+## データ（3.1 Data and annotations）
+
+| 本文の記述 | 出どころ |
+|---|---|
+| JIGSAWS は da Vinci、ベンチトップモデル、術者 8 人、Suturing 39 試行 | PMC7671974（JIGSAWS を解析した論文。JIGSAWS 公式ページと Gao 2014 の PDF は 403 で未取得） |
+| 自己申告の技能（初心者 B, G, H, I／中級 C, F／熟練 D, E）、各組が熟練 1・中級 1・初心者 2 | PMC7671974、公開リポ `docs/dataset.md` |
+| 1 試行 4 針 | `annotations/events_and_ease.json`（公開リポ）: 使った 35 試行で needle_withdrawal_end が各 4（計 140） |
+| 開発用 B, E, F, I（16 試行、64 針）、テスト用 C, D, G, H（19 試行、76 針） | 公開リポ `configs/split.yaml`、`docs/dataset.md`、`annotations/events_and_ease.json` |
+| few-shot の 2 試行（B001, E003）は他に使わない | 公開リポ `docs/dataset.md` |
+
+## EASE の基準（2.1、2.3–2.5）
+
+| 本文の記述 | 出どころ |
+|---|---|
+| Repositions ≤2 / 3 / ≥4、Ratio 1:1〜3/4:1/4、Angle 90–135° / 135–150°、Depth 1/4 / 1/2 | Haque 2022 Figure 2（`data/references/haque2022_ease_nihms-1871225.pdf` p.10、画像 `haque2022_p-10.png`） |
+| AutoEASE は全 sub-skill を 2 値で採点、ideal frame を YOLOv12 で選ぶ（536 枚） | Deo 2026（`data/references/deo2026.txt`） |
+
+## 実装（3.2 Implementation）
+
+| 本文の記述 | 出どころ |
+|---|---|
+| GPT-6 Astra（gpt-6-astra）、reasoning medium | 公開リポ `suturing_assessment/astra_events.py`、`astra_keypoints_and_masks.py`（MODEL、REASONING_EFFORT） |
+| System Card（2026-09-03） | `data/references/openai_gpt6_astra_system_card.pdf` |
+| イベント: 5 fps、1 リクエスト 20 s、前後 10 s の文脈、それまでのイベントを渡す | `astra_events.py`（EVENT_STEP=6, TARGET_SECONDS=20, CONTEXT_SECONDS=10） |
+| keypoint とマスク: 10 fps、20 フレーム／リクエスト、例は 20 フレーム | `astra_keypoints_and_masks.py`（FRAME_STEP=3, WINDOW=20）、`annotations/keypoint_fewshot_E003.json` |
+
+## 比較手法と指標（3.3 Baselines and metrics）
+
+| 本文の記述 | 出どころ |
+|---|---|
+| 直接採点: 評価対象区間を 5 fps、前後 10 s、EASE 基準と補足、開発用 3 針の点数付き例、点数・確率・値を返す | 公開リポ `docs/astra_ease.md`、`results/test/astra_ease/` |
+| 予測区間の対応: 人手の針の区間（前の引き抜き終了の後〜その針の引き抜き終了）に検出の刺入がある針と1対1で対応、複数なら刺入が最も近いもの | `data/paper_analysis/final/analysis_final.py` の match_pred（TOL=−1） |
+| イベント検出の F1、許容 1 s | `data/paper_analysis/paper/event_detection.txt` |
+| AUC: 陽性 = EASE 3（Ratio は 2–3）、順位は EASE 基準への符号付きマージン、直接採点は陽性クラスの確率 | `data/paper_analysis/final/README.md`、`analysis_final.py` |
+| 測れなかった針は両指標で誤り（AUC は最悪順位）。該当は全条件で 0 針 | `final/analysis_{dev,test}.txt` の missing 行 |
+| 動画単位ブートストラップ（本文に回数は書かない。実際は 2000 回）、差は対応あり | `analysis_final.py`（B = 2000） |
+
+## 結果の数値（未記入）
+
+- 主結果・完全自動・Astra との差: `data/paper_analysis/final/analysis_{dev,test}.txt`（`final/run_final.sh` で再実行、定義は `final/README.md`）
+- 構成要素の比較: `data/paper_analysis/final/ablation_*.txt`、`pf_analysis_*.txt`
+- イベント検出: `data/paper_analysis/paper/event_detection.txt`
+- keypoint とマスクの精度（H004）: `data/paper_analysis/paper/perception_H004.txt`
+- 5 fps での感度分析（Results に入れる。test の AUC 変化は 0.04 未満: Ratio +0.032, Angle −0.007, Depth +0.015、人手区間）: `data/paper_analysis/final/analysis_{dev,test}_fps5.txt`、`paired_fps_{dev,test}.txt`
