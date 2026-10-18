@@ -1,37 +1,66 @@
 \section{Results}
 \label{sec:results}
 
-\placeholder{Comparison with direct VLM grading (Table~\ref{tab:main}),
-component comparisons (Table~\ref{tab:components}), evidence cards
-(Fig.~\ref{fig:evidence}), and measurement validation. Sensitivity: measuring
-from the 5-fps frames only, as the baseline sees them, changes the test AUCs
-by less than 0.04.}
+Table~\ref{tab:main} compares our method with direct VLM grading on the
+annotated assessment windows. Despite the favorable conditions given to the
+baseline, our method has a higher AUC and balanced accuracy for all three
+sub-skills. The difference is clearest for Needle Hold Angle (AUC $+0.119$,
+95\% CI 0.05--0.23), where the baseline misses many poor holds (recall of
+EASE 1: 0.58 versus 0.83); for the other two, the intervals are not clearly
+above zero, so our method is at least on par. Measuring from the 5-fps frames
+only, as the baseline sees them, changes our test AUCs by less than 0.04.
+
+Table~\ref{tab:e2e} shows the end-to-end results, in which the events are also
+detected. Event detection reaches an F1 of 0.89, and every annotated stitch is
+paired with a detected stitch (median entry error 0.28~s), with one extra
+detection. The AUCs differ by at most 0.012 from those with the annotated
+windows, and all four sub-skills are scored from the video alone.
+
+\placeholder{Interpretability: evidence cards (Fig.~\ref{fig:evidence}); each
+score comes with the frame, keypoints, fitted arc, and the value on the EASE
+scale; most errors lie near a threshold.}
 
 \begin{table*}[htb]
 \centering
-\caption{\loremcaption}
+\small
+\caption{Test results with the annotated assessment windows (76 stitches).
+The difference is ours minus direct VLM grading, with the 95\% confidence
+interval of the paired bootstrap.}
 \label{tab:main}
-\begin{tabular}{@{}lllll@{}}
+\begin{tabular}{@{}lcccccc@{}}
 \hline
-Method & Repositions & Ratio & Angle & Depth \\
+& \multicolumn{2}{c}{Needle Hold Ratio} & \multicolumn{2}{c}{Needle Hold Angle}
+& \multicolumn{2}{c}{Depth of Needle Hold} \\
+Method & AUC & BA & AUC & BA & AUC & BA \\
 \hline
-\placeholder{TBD} & -- & -- & -- & -- \\
+Direct VLM grading & 0.848 & 0.764 & 0.845 & 0.753 & 0.884 & 0.533 \\
+Ours & \textbf{0.910} & \textbf{0.785} & \textbf{0.964} & \textbf{0.859}
+& \textbf{0.903} & \textbf{0.662} \\
+\hline
+Difference & $+$0.062 & $+$0.021 & $+$0.119 & $+$0.106 & $+$0.019 & $+$0.129 \\
+\quad 95\% CI & [0.00, 0.14] & [$-$0.05, 0.12] & [0.05, 0.23] & [$-$0.02, 0.22]
+& [$-$0.08, 0.10] & [$-$0.08, 0.34] \\
 \hline
 \end{tabular}
 \end{table*}
 
 \begin{table}[htb]
 \centering
-\caption{\loremcaption}
-\label{tab:components}
-\begin{tabular}{@{}lll@{}}
+\small
+\caption{End-to-end test results with detected events (76 stitches).}
+\label{tab:e2e}
+\begin{tabular}{@{}lcc@{}}
 \hline
-Sub-skill & Variant & AUC \\
+Sub-skill & AUC & BA \\
 \hline
-\placeholder{TBD} & -- & -- \\
+Needle Repositions & 0.974 & 0.791 \\
+Needle Hold Ratio & 0.921 & 0.803 \\
+Needle Hold Angle & 0.966 & 0.878 \\
+Depth of Needle Hold & 0.890 & 0.655 \\
 \hline
 \end{tabular}
 \end{table}
+
 
 \begin{figure*}[htb]
 \centering

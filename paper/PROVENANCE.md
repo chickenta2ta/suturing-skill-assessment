@@ -46,4 +46,16 @@
 - 構成要素の比較: `data/paper_analysis/final/ablation_*.txt`、`pf_analysis_*.txt`
 - イベント検出: `data/paper_analysis/paper/event_detection.txt`
 - keypoint とマスクの精度（H004）: `data/paper_analysis/paper/perception_H004.txt`
-- 5 fps での感度分析（Results に入れる。test の AUC 変化は 0.04 未満: Ratio +0.032, Angle −0.007, Depth +0.015、人手区間）: `data/paper_analysis/final/analysis_{dev,test}_fps5.txt`、`paired_fps_{dev,test}.txt`
+- 5 fps での感度分析: `data/paper_analysis/final/analysis_{dev,test}_fps5.txt`、`paired_fps_{dev,test}.txt`
+
+## 結果（4 Results）
+
+| 本文の記述 | 出どころ |
+|---|---|
+| Table 2（人手の評価対象区間、直接採点 vs 我々、AUC・BA と 95% 区間、差 = 我々 − 直接採点） | `data/paper_analysis/final/analysis_test.txt` の main metrics（ours, astra）と paired differences（astra − ours の符号を反転） |
+| Table 3（完全自動、4 項目の AUC・BA と 95% 区間） | `data/paper_analysis/final/analysis_test.txt` の main metrics（ours_pred） |
+| Angle の差 AUC +0.119（95% CI 0.05–0.23）、EASE 1 の再現率 0.58（直接採点）vs 0.83（我々） | `final/analysis_test.txt` の paired differences（astra Angle AUC −0.119 [−0.23, −0.05]）と main metrics の recall |
+| 5 fps のフレームだけで計測しても test の AUC の変化は 0.04 未満（Ratio +0.032, Angle −0.007, Depth +0.015） | `final/paired_fps_test.txt` |
+| イベント検出 F1 0.89（test、許容 1 s） | `data/paper_analysis/paper/event_detection.txt` の test 行 |
+| 76/76 針が対応、余分な検出 1、刺入誤差の中央値 0.28 s | `final/analysis_test.txt` の冒頭（predicted stitches 77, matched 76/76） |
+| 人手区間との AUC の差は最大 0.012（Ratio +0.011, Angle +0.002, Depth −0.012） | `final/analysis_test.txt` の paired differences（ours_pred） |
