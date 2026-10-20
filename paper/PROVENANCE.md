@@ -48,6 +48,12 @@
 - keypoint とマスクの精度（H004）: `data/paper_analysis/paper/perception_H004.txt`
 - 5 fps での感度分析: `data/paper_analysis/final/analysis_{dev,test}_fps5.txt`、`paired_fps_{dev,test}.txt`
 
+## 要旨
+
+| 本文の記述 | 出どころ |
+|---|---|
+| 完全自動で AUC 0.89–0.97 | `final/analysis_test.txt` の ours_pred（Repositions 0.974, Ratio 0.921, Angle 0.966, Depth 0.890）＝ Table 3 |
+
 ## 結果（4 Results）
 
 | 本文の記述 | 出どころ |

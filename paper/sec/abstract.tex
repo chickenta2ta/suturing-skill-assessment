@@ -1,7 +1,20 @@
 \begin{abstract}
-\placeholder{Abstract, about 150 words.}
+Surgical training needs objective assessment of suturing skill, and rating
+tools such as EASE score how a surgeon holds the needle against defined
+criteria. Rating every stitch by hand is costly, and existing automation
+predicts the scores end to end, so a score cannot be checked. We instead
+measure what the criteria define. Detected events divide a monocular suturing
+video into stitches and into the window that each criterion refers to. In
+that window, keypoints and needle masks, obtained from a general-purpose
+vision--language model with a few examples, give the geometry of the needle
+and the instrument, from which the grasp position, the hold angle, and the
+hold depth are measured in 3D and scored by the EASE criteria. Every score is
+thus traceable to the frames and the value behind it. On JIGSAWS, running
+fully automatically from the raw video to the scores, the method reproduces a
+surgeon's EASE scores with AUC 0.89--0.97, at least as well as direct grading
+by a state-of-the-art VLM.
 \end{abstract}
 %
 \begin{keywords}
-\placeholder{Keywords}
+Surgical skill assessment, suturing, explainability, EASE, monocular video
 \end{keywords}
