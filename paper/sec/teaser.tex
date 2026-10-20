@@ -1,0 +1,13 @@
+% The teaser is placed under the title block on the first page. A figure* cannot
+% appear on the page where it is defined in two-column mode, so the figure is
+% appended to the title block that spconf typesets with \twocolumn[...].
+\makeatletter
+\g@addto@macro\@maketitle{%
+  \begin{center}
+  \includegraphics[width=\textwidth]{figures/overview_placeholder}%
+  \refstepcounter{figure}%
+  \@makecaption{\fnum@figure}{\loremcaption}%
+  \label{fig:overview}
+  \end{center}
+  \vskip 1em}
+\makeatother

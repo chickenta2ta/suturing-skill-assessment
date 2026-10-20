@@ -9,24 +9,17 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
+MM = 1 / 25.4
 FIGURES = {
     "overview": {
-        "size": (3.4, 2.0),
-        "title": "Fig. overview (1 column, ~5 cm)",
+        "size": (178 * MM, 91 * MM),  # full text width; the teaser draft is 2000 x 1025 px
+        "title": "Fig. 1 teaser (full width, 178 x 91 mm)",
         "body": (
-            "Timeline of one stitch: previous withdrawal end -> repositions -> "
-            "last reposition end -> entry. Reposition window R_i and hold window W_i "
-            "marked. Per-frame keypoints/mask in W_i -> geometric quantities "
-            "(ratio s_i, angle, depth) -> EASE rules -> scores."
-        ),
-    },
-    "evidence": {
-        "size": (7.0, 2.8),
-        "title": "Fig. evidence cards (full width, 7-8 cm)",
-        "body": (
-            "3-4 stitches: a correct one, a near-threshold error, a keypoint error. "
-            "Each card: the frame used, keypoints, fitted arc, the value on a scale "
-            "with EASE thresholds, our score vs the label."
+            "(a) Perception: monocular video -> event detection (timeline of one stitch, hold window) "
+            "and keypoints + needle mask on the frames of the window. "
+            "(b) Measurement: Needle Hold Ratio (3D arc, cost over s), Needle Hold Angle (3D angle per frame, median), "
+            "Depth of Needle Hold (longest-jaw frame, depth per frame). "
+            "(c) Scoring: each value on the EASE scale with its score."
         ),
     },
 }
