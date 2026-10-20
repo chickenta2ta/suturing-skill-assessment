@@ -59,3 +59,4 @@
 | イベント検出 F1 0.89（test、許容 1 s） | `data/paper_analysis/paper/event_detection.txt` の test 行 |
 | 76/76 針が対応、余分な検出 1、刺入誤差の中央値 0.28 s | `final/analysis_test.txt` の冒頭（predicted stitches 77, matched 76/76） |
 | 人手区間との AUC の差は最大 0.012（Ratio +0.011, Angle +0.002, Depth −0.012） | `final/analysis_test.txt` の paired differences（ours_pred） |
+| Fig. 2（`figures/values_vs_ground_truth.pdf`）: test 76 針の計測値と EASE の正解、正誤 | 公開リポ `results/test/{needle_hold_ratio,needle_hold_angle,depth_of_needle_hold}.json` と `annotations/events_and_ease.json`。生成は `data/paper_figures/fig2_values.py REPO --publish`（語彙は同じフォルダの `figstyle.py`） |
