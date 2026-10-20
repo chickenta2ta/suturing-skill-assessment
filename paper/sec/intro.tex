@@ -1,41 +1,37 @@
 \section{Introduction}
 \label{sec:intro}
 
-Training surgeons requires assessing their technique, and suturing is one of
-the most important skills to assess. An experienced surgeon
-watching a trainee can tell a good stitch from a poor one, but such review
-takes time that is rarely available, the judgment varies between reviewers,
-and ``good'' or ``poor'' alone does not tell the trainee what to change.
-EASE~\cite{Haque2022} addresses the last two points by dividing robotic
-suturing into sub-skills, each scored against a defined criterion, such as
-where along the needle it is held or at what angle, so that a score points to
-what to correct. Scoring remains manual, however, and when every stitch is
-scored, the rater's time becomes the bottleneck.
+Surgeons learn by being assessed, and suturing, passing a curved needle
+through tissue with an instrument, is among the skills assessed most. An
+expert watching a trainee can tell a good stitch from a poor one, but such
+review takes time, varies between reviewers, and ``poor'' alone does not say
+what to change. EASE~\cite{Haque2022} is a rating tool for robotic suturing
+that scores each sub-skill against a defined criterion, such as where along
+the needle it is held or at what angle, so that a score points to what to
+correct. Scoring every stitch by hand, however, makes the rater's time the
+bottleneck.
 
-Automated skill assessment from surgical video has moved from classifying
-expertise on JIGSAWS~\cite{Funke2019,Liu2021} to rating tools with clinically
-defined criteria~\cite{Kiyasseh2023}. For EASE, prior
-work~\cite{Cui2024,Deo2026} trains networks on annotated stitches to predict
-each sub-skill as good or poor, and a general-purpose vision--language model
-(VLM) can be asked for a score directly. Either way the score is the output
-of a model: attention maps and evidence frames can show where it
-looked~\cite{IsmailFawaz2019,Kiyasseh2023b}, but not what it measured, so a
-given score cannot be checked. Keypoints and masks of instruments are now
-readily obtained from surgical video~\cite{Ghanekar2025}, and the 3D pose of
-a suture needle has been recovered for autonomous suturing, but with stereo
-cameras, calibrated projection, or trained detectors~\cite{Chiu2022,Li2024}.
+Automated assessment from surgical video has moved from classifying
+expertise on JIGSAWS~\cite{Funke2019,Liu2021} to clinically defined rating
+tools~\cite{Kiyasseh2023}; for EASE, networks trained on annotated stitches
+predict each sub-skill as good or poor~\cite{Cui2024,Deo2026}, and a
+general-purpose vision--language model (VLM) can be asked for a score
+directly. In both cases the score is a model output: attention maps and
+evidence frames show where the model looked~\cite{IsmailFawaz2019,Kiyasseh2023b},
+not what it measured, so a score cannot be checked. Instrument keypoints and
+masks can be detected in surgical video~\cite{Ghanekar2025}, and 3D needle pose has been
+recovered for autonomous suturing, but with stereo cameras, calibration, or
+trained detectors~\cite{Chiu2022,Li2024}.
 
-Our observation is that EASE already defines its criteria geometrically: the
-grasp position along the needle, the angle between the needle and the jaws,
-and the depth of the needle in the jaws. We therefore measure these quantities
-rather than predict the scores (Fig.~\ref{fig:overview}). A video contains
-many stitches, and each sub-skill refers to a specific part of a stitch, so
-events detected in the video first divide it into stitches and then into the
-window that each sub-skill refers to. Within the window, keypoints and a
-needle mask on each frame give the geometry, which is measured in 3D from the
-monocular video and converted into scores by the EASE criteria. Every score
-thus comes with the frames and the value it was derived from, and can be
-verified.
+Our observation is that EASE defines its criteria geometrically: the grasp
+position along the needle, the angle between the needle and the jaws, and
+the depth of the needle in the jaws. We therefore measure these quantities
+instead of predicting the scores (Fig.~\ref{fig:overview}). Events detected
+in the video divide it into stitches and into the window that each sub-skill
+refers to; within it, per-frame keypoints and a needle mask give the
+geometry, which is measured in 3D from the monocular video and scored by the
+EASE criteria. Every score thus comes with the frames and the value behind
+it, and can be verified.
 
 Our contributions are threefold. (1) A measurement-based formulation of EASE
 scoring: a score is a geometric quantity compared with the EASE criterion,
@@ -48,8 +44,8 @@ angle from segments lifted to 3D, and the depth from a ratio that projection
 preserves. (3) Validation on JIGSAWS~\cite{Gao2014} with surgeons split
 between development and test: the method reproduces a surgeon's EASE scores
 at least as well as direct grading by a state-of-the-art VLM given favorable
-conditions, also when the events are detected automatically, and its measured
-values follow the EASE ranges, with most errors near a threshold.
+conditions, also when the events are detected automatically, and most of its
+errors lie near a threshold.
 
 \begin{figure}[htb]
 \centering
