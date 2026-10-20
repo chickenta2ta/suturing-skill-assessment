@@ -12,14 +12,18 @@ where along the needle it is held or at what angle, so that a score points to
 what to correct. Scoring remains manual, however, and when every stitch is
 scored, the rater's time becomes the bottleneck.
 
-Automating EASE has so far meant predicting its scores. Prior
-work~\cite{Deo2026} trains detectors and classifiers on annotated surgical
-video to predict each sub-skill as good or poor, and a general-purpose
-vision--language model (VLM) can be asked for a score directly. Both return a
-score end to end: its accuracy can be measured on a test set, but a given
-score cannot be checked, because nothing shows what it was based on.
-\placeholder{Related work from the survey: skill assessment on JIGSAWS, VLMs
-for surgical assessment, instrument and needle perception, 3D needle pose.}
+Automated skill assessment from surgical video has moved from classifying
+expertise on JIGSAWS~\cite{Funke2019,Liu2021} to rating tools with clinically
+defined criteria~\cite{Kiyasseh2023}. For EASE, prior
+work~\cite{Cui2024,Deo2026} trains networks on annotated stitches to predict
+each sub-skill as good or poor, and a general-purpose vision--language model
+(VLM) can be asked for a score directly. Either way the score is the output
+of a model: attention maps and evidence frames can show where it
+looked~\cite{IsmailFawaz2019,Kiyasseh2023b}, but not what it measured, so a
+given score cannot be checked. Keypoints and masks of instruments are now
+readily obtained from surgical video~\cite{Ghanekar2025}, and the 3D pose of
+a suture needle has been recovered for autonomous suturing, but with stereo
+cameras, calibrated projection, or trained detectors~\cite{Chiu2022,Li2024}.
 
 Our observation is that EASE already defines its criteria geometrically: the
 grasp position along the needle, the angle between the needle and the jaws,

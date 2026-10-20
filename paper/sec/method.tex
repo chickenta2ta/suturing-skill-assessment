@@ -119,8 +119,10 @@ example as the needle is turned toward the tissue before entry, even though
 the hold itself does not change. A 2D angle therefore measures the view as
 much as the hold.
 
-We recover the 3D angle from the monocular video, based on one simple fact:
-projection can only shorten a segment. The needle segment
+We recover the 3D angle from the monocular video, based on one simple fact
+that also underlies reconstruction from a single uncalibrated
+image~\cite{Taylor2000}: projection can only shorten a segment. The needle
+segment
 $\mathbf{u}_t=\mathbf{p}_{\mathrm{tip}}-\mathbf{p}_{\mathrm{grasp}}$ keeps its
 3D length throughout the hold window, and the jaw segment
 $\mathbf{v}_t=\mathbf{p}_{\mathrm{base}}-\mathbf{p}_{\mathrm{jaw}}$ keeps its
