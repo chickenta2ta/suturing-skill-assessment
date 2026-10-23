@@ -1,139 +1,96 @@
 \section{Method}
 \label{sec:method}
 
-As outlined in Fig.~\ref{fig:overview}, the method divides a suturing video
-into stitches by detecting events, and each stitch into the window that each
-sub-skill refers to. Within these windows, each frame is given keypoints and a
-needle mask, from which the quantities that EASE refers to are measured
-geometrically and converted into scores. Every score thus traces back to a time
-interval, the frames used, and a measured value.
-
 \subsection{Event-guided assessment framework}
 \label{ssec:framework}
 
-Our goal is to assess EASE needle-handling sub-skills from a suturing video
-alone. Each sub-skill, however, refers to a different part of a stitch. Needle
-Repositions concerns how the needle is prepared for the next stitch, whereas
-Needle Hold Ratio, Needle Hold Angle, and Depth of Needle Hold concern how the
-needle is held when it is driven into the tissue. Scoring a whole video, or a
-whole stitch, therefore mixes in frames that are irrelevant to the sub-skill.
-We instead detect events that delimit each stitch, and assess each sub-skill
-only within the interval it refers to.
+The four EASE needle-handling sub-skills assess different phases of
+stitching: Needle Repositions
+concerns preparation for the next stitch, whereas the three needle-hold
+sub-skills assess the hold from the last reposition end to tissue entry.
+Whole-video or whole-stitch evaluation intervals would include irrelevant
+frames. We therefore detect events that delimit each stitch and assess each
+sub-skill only within its relevant interval.
 
-A stitch generally proceeds as follows. After the previous needle has left the
-tissue, the surgeon passes the needle between the two instruments to prepare
-for the next stitch. The last of these repositions fixes the hold, which is
-kept until the needle enters the tissue. We detect the five types of events
-in Table~\ref{tab:events}, each an instant in the video. A stitch ends at a
-withdrawal end, and its entry $e_i$ is the last entry before it; a retraction
-does not end the stitch.
-
-\begin{table}[htb]
-\centering
-\small
-\caption{Event types.}
-\label{tab:events}
-\begin{tabular}{@{}ll@{}}
-\hline
-Event & Definition \\
-\hline
-Reposition start & Both instruments grasp the needle outside tissue \\
-Reposition end & One instrument releases the needle \\
-Entry & The needle tip enters the tissue \\
-Withdrawal end & The needle leaves the tissue on the far side \\
-Retraction end & The needle is pulled back out on the entry side \\
-\hline
-\end{tabular}
-\end{table}
-
-Two observation windows follow from these events (Fig.~\ref{fig:overview}). The reposition
-window $R_i=(w_{i-1},e_i]$ spans from the previous withdrawal end $w_{i-1}$
-(the start of the video for the first stitch) to the entry. The hold window
-$W_i=[a_i,e_i]$ starts at the last reposition end $a_i$ in $R_i$, or at
-$w_{i-1}$ if there is none. Since the hold does not change until entry, the
-hold sub-skills can be measured from any frame in $W_i$. Following EASE,
-Needle Repositions is scored from the number $n_i$ of reposition starts in
-$R_i$: 3, 2, and 1 for $n_i\leq2$, $n_i=3$, and $n_i\geq4$, respectively.
+After the needle exits the tissue, the surgeon typically repositions it by
+grasping it with both instruments and then releasing one; the final
+reposition fixes the hold until entry. We use four event types:
+\emph{reposition start} (both instruments grasp the needle outside the
+tissue), \emph{reposition end} (one of them releases it), \emph{entry} (the
+needle tip enters the tissue), and \emph{withdrawal end} (the needle leaves
+the tissue on the far side). A stitch ends at withdrawal end, and its entry
+$e_i$ is the last preceding entry. These events define the reposition window
+$R_i=(w_{i-1},e_i]$ and hold window $W_i=[a_i,e_i]$
+(Fig.~\ref{fig:overview}), where $w_{i-1}$ is the previous withdrawal end
+(video start for the first stitch) and $a_i$ the last reposition end in $R_i$
+(or $w_{i-1}$ if none). As the hold remains fixed in $W_i$, hold sub-skills
+are measured there. Following EASE, Needle Repositions scores 3, 2, or 1 for
+$n_i\leq2$, $n_i=3$, or $n_i\geq4$ reposition starts in $R_i$, respectively.
 
 \subsection{Per-frame observations}
 \label{ssec:observations}
 
-To measure the hold geometrically, each frame in the hold window is given
-keypoints and a needle mask $\mathcal{M}$. The keypoints are the needle tip
-$\mathbf{p}_{\mathrm{tip}}$ and tail $\mathbf{p}_{\mathrm{tail}}$, and, for
-each instrument, the jaw tip $\mathbf{p}_{\mathrm{jaw}}$ (the midpoint of the
-two jaw tips), the jaw base $\mathbf{p}_{\mathrm{base}}$, and, when the jaws
-grip the needle, the grasp point $\mathbf{p}_{\mathrm{grasp}}$. The hold
-sub-skills use the frames in which only one instrument grips the needle. The
-framework does not prescribe how these observations are obtained; a detector
-and a segmentation model trained on local annotations would serve equally
-well. In this work, both the events and the per-frame observations are
-obtained from a general-purpose VLM given a few examples, without any training
-(Sec.~\ref{ssec:implementation}). The framework can thus be set up without
-task-specific training, which should ease its transfer to other suturing
-videos.
+Each frame in the hold window is given a needle mask $\mathcal{M}$ and
+keypoints: the needle tip $\mathbf{p}_{\mathrm{tip}}$ and tail
+$\mathbf{p}_{\mathrm{tail}}$, and, for each instrument, the jaw tip
+$\mathbf{p}_{\mathrm{jaw}}$ (the midpoint of the two jaw tips), the jaw base
+$\mathbf{p}_{\mathrm{base}}$, and, when the jaws grip the needle, the grasp
+point $\mathbf{p}_{\mathrm{grasp}}$. The hold sub-skills use the frames in
+which only one instrument grips the needle. The framework does not prescribe
+how these observations are obtained; here, they and the events all come from
+a general-purpose VLM given a few examples, without any training
+(Sec.~\ref{ssec:implementation}).
 
 \subsection{Needle Hold Ratio}
 \label{ssec:ratio}
 
-EASE accepts a hold between the 1:1 and the 3/4:1/4 positions along the
-needle, and gives 3 rather than 2 when the grasp position is adjusted to the
-bite, which the position alone does not show. We therefore score it in two
-classes, good (EASE 2--3) and poor (EASE 1), as AutoEASE~\cite{Deo2026} scores
-every sub-skill in two classes. We measure the grasp position $s_i\in[0,1]$,
-the length along the needle from its tip to the grasp point divided by the
-length of the needle (0 at the tip, 1 at the tail). The hold is good when
-$1/2\leq s_i\leq3/4$.
+EASE accepts holds between the 1:1 and 3/4:1/4 positions along the needle,
+but distinguishes scores 3 and 2 by adjustment to the bite, which grasp
+position alone cannot reveal. Following AutoEASE~\cite{Deo2026}, we therefore
+classify Needle Hold Ratio as good (EASE 2--3) or poor (EASE 1). Let
+$s_i\in[0,1]$ be the tip-to-grasp arc length normalized by needle length (0
+at the tip, 1 at the tail); a hold is good when $1/2\leq s_i\leq3/4$.
 
-The grasp position cannot be read from the image directly. The needle is
-curved, partly hidden by the jaws, and foreshortened as it tilts, so lengths in
-the image are not lengths along the needle. We instead estimate the needle in
-3D. The needle is modeled as a circular arc with radius $r$ and arc angle
-$\theta$, with the grasp point at $s_i$ along it. In each frame $t$, the arc is
-placed in 3D under weak perspective so that its tip and grasp point project
-onto the observed ones, and is rotated about them so that its projection best
-explains the rest of the observed needle, namely the mask and the tail when it
-is visible. Let $E_t(r,\theta,s_i)$ be the remaining discrepancy in pixels.
-Since one needle is used throughout a video, $r$ and $\theta$ are shared by
-all its stitches and are estimated together with the grasp positions,
+Because the needle is curved, partly occluded, and foreshortened, its arc
+length cannot be measured directly from the image. We model it as a 3D
+circular arc of radius $r$ and arc angle $\theta$, with grasp position $s_i$.
+In each frame $t$, under weak perspective, we align the projected tip and
+grasp point with observations, then rotate the arc about them to best fit the
+needle mask and visible tail. The residual pixel discrepancy is
+$E_t(r,\theta,s_i)$. Since the same needle is used throughout a video, $r$
+and $\theta$ are shared across stitches and estimated jointly with their grasp
+positions,
 \begin{equation}
 \hat{r},\hat{\theta},\{\hat{s}_i\}=\arg\min_{r,\theta,\{s_i\}}
 \sum_i\frac{1}{|F_i|}\sum_{t\in F_i}E_t(r,\theta,s_i),
 \label{eq:arc}
 \end{equation}
 where $F_i$ is the set of frames of $W_i$ in which the needle tip and mask are
-observed. No needle size, needle shape, or camera calibration is given
-beforehand; everything is estimated from the monocular video alone, and the
-stitches in which the needle is clearly visible constrain its shape for the
-others.
-
+observed. No needle size, needle shape, or camera calibration is given; the
+stitches with a clearly visible needle constrain its shape for the others.
 
 \subsection{Needle Hold Angle}
 \label{ssec:angle}
 
-EASE illustrates the hold angle as the angle between the needle, from the
-grasp point toward the tip, and the jaws. It gives 3 for 90--135$^\circ$, 2
-for up to 150$^\circ$, and 1 otherwise. This is an angle in 3D. The angle
-seen in the image changes whenever the instrument or the needle tilts, for
-example as the needle is turned toward the tissue before entry, even though
-the hold itself does not change. A 2D angle therefore measures the view as
-much as the hold.
+EASE illustrates the hold angle between the grasp-to-tip needle direction
+and the jaws, scoring 3 at 90--135$^\circ$, 2 at 135--150$^\circ$, and 1
+otherwise. Its apparent 2D angle can change with needle or instrument tilt
+(e.g., when turning the needle toward tissue before entry), even if the hold
+is fixed.
 
-We recover the 3D angle from the monocular video, based on one simple fact
-that also underlies reconstruction from a single uncalibrated
-image~\cite{Taylor2000}: projection can only shorten a segment. The needle
-segment
-$\mathbf{u}_t=\mathbf{p}_{\mathrm{tip}}-\mathbf{p}_{\mathrm{grasp}}$ keeps its
-3D length throughout the hold window, and the jaw segment
-$\mathbf{v}_t=\mathbf{p}_{\mathrm{base}}-\mathbf{p}_{\mathrm{jaw}}$ keeps its
-length throughout the video. Their true lengths $L_u$ and $L_v$ are thus
-revealed by the frames in which they appear longest, and we take a high
-percentile of their image lengths, over the hold window for the needle and
-over all hold windows of the video for the jaws. Under weak perspective, how
-much shorter a segment appears gives the size of its depth component, and the
-viewing geometry gives its sign: the camera looks down on the pad, so the
-needle tip, pointing toward the tissue, is farther than the grasp point, and
-the jaw base is nearer than the jaw tip. Each segment is lifted to 3D as
+We estimate the 3D angle using segment foreshortening under weak perspective,
+as in uncalibrated single-image 3D reconstruction~\cite{Taylor2000}. The
+needle segment
+$\mathbf{u}_t=\mathbf{p}_{\mathrm{tip}}-\mathbf{p}_{\mathrm{grasp}}$ retains
+its 3D length within each hold window, and the jaw segment
+$\mathbf{v}_t=\mathbf{p}_{\mathrm{base}}-\mathbf{p}_{\mathrm{jaw}}$
+throughout the video. Assuming approximately constant image scale, we
+estimate their 3D lengths up to scale, $L_u$ and $L_v$, from high percentiles
+of projected lengths within the hold window and across all hold windows,
+respectively. Foreshortening gives the magnitude of each depth component,
+while its sign is assigned assuming the tissue-facing needle tip is farther
+from the camera than the grasp point and the jaw base is nearer than the jaw
+tip. Each segment is lifted to 3D as
 \begin{equation}
 \begin{aligned}
 \tilde{\mathbf{u}}_t&=\Bigl(\mathbf{u}_t,\,
@@ -144,24 +101,18 @@ the jaw base is nearer than the jaw tip. Each segment is lifted to 3D as
 \label{eq:lift}
 \end{equation}
 and the hold angle $\alpha_i$ is the median over the frames of the angle
-between $\tilde{\mathbf{u}}_t$ and $\tilde{\mathbf{v}}_t$. No depth sensor,
-depth estimation network, or camera calibration is involved; the 3D angle
-follows from how much the needle and the jaws shrink in the image.
+between $\tilde{\mathbf{u}}_t$ and $\tilde{\mathbf{v}}_t$.
 
 \subsection{Depth of Needle Hold}
 \label{ssec:depth}
 
-EASE asks how deep in the jaws the needle is held; holding it near the jaw tip
-is best. We measure the depth $d_i$ as the position of the grasp point along
-the jaws, 0 at the jaw tip and 1 at the jaw base, and give 3 for
-$d_i\leq1/4$, 2 for $d_i\leq1/2$, and 1 otherwise.
+Following EASE, we score Depth of Needle Hold using the
+grasp-point position $d_i$ along the jaws (0 at the tip, 1 at the base): 3 for
+$d_i\leq1/4$, 2 for $1/4<d_i\leq1/2$, and 1 otherwise.
 
-Unlike the angle, the depth needs no 3D lifting: under weak perspective, a
-ratio of lengths along a line is the same in the image as in 3D. The
-difficulty is rather in which frame to read it from. When the jaws point
-toward the camera, they appear only a few pixels long, and a small keypoint
-error becomes a large error in the depth. Unlike prior work~\cite{Deo2026}, we
-do not train a detector on annotated ideal frames to pick the frame. Since the
-hold does not change until entry, every frame of the window shows the same
-depth, so we simply read it from the frame in which the jaws appear longest,
-that is, the least foreshortened view.
+Under weak perspective, length ratios along a line are preserved between 3D
+and the image, so depth requires no 3D reconstruction. When the jaws point
+toward the camera, however, they appear only a few pixels long, amplifying
+keypoint errors. Since the hold remains fixed until entry, we measure depth in
+the frame with the longest apparent jaws, rather than
+training a detector on annotated ideal frames as in~\cite{Deo2026}.
