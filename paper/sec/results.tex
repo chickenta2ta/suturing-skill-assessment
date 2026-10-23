@@ -18,8 +18,8 @@ AUCs by less than 0.04 and kept the differences (Ratio $+$0.094 [0.027,
 Table~\ref{tab:e2e} reports end-to-end scoring with automatic event detection
 (F1 = 0.89). All annotated stitches were matched to detections (median entry
 error 0.28~s), with one extra detection. AUCs differed by at most 0.012 from
-annotated-window scoring, and all four sub-skills were scored
-automatically from video alone.
+annotated-window scoring, and all four sub-skills were scored from
+video alone.
 
 For each ground-truth score, measurements clustered within its EASE-defined
 range (Fig.~\ref{fig:values}). Of the misclassified stitches, 15 of 17 for
@@ -34,10 +34,10 @@ gray: the range where EASE gives that score.}
 \label{fig:values}
 \end{figure}
 
-The physician who rated the stitches also annotated keypoints and needle masks
-in 46 frames of one test trial (Table~\ref{tab:perception}). Needle tip and
-jaw tip lay within 2 px (median), whereas the jaw base, the least precise
-point, was shifted toward the wrist by 0.21 jaw lengths (median). The needle
+Keypoints and needle masks were annotated in 46 frames of one test trial
+(Table~\ref{tab:perception}). Needle and jaw
+tips lay within 2 px (median), whereas the jaw base, the least precise
+point, shifted toward the wrist by 0.21 jaw lengths (median). The needle
 mask reached a mean surface Dice~\cite{Nikolov2021} of 0.81 at a 3-px
 tolerance, half the needle width, over the 34 frames with a visible needle, a
 boundary metric suited to thin structures~\cite{MaierHein2024}.
@@ -71,10 +71,10 @@ within a hold, and kept an AUC of 0.91--0.92 from the first frame to the last.
 \small
 \setlength{\tabcolsep}{3pt}
 \caption{Simpler measurements from the same keypoints and windows (test):
-AUC / BA and the median within-hold IQR of per-frame values. Shading: rank
-within a column, from the best (darkest) to the worst (none).
+AUC / BA and median within-hold IQR of per-frame values. Shading: rank
+within a column (darkest is best).
 Best frame: most face-on needle, longest needle segment, or longest jaws.
-Bold: ours, which uses no 3D for depth.}
+Bold: ours (no 3D for depth).}
 \label{tab:ablation}
 \begin{tabular}{@{}lcccccc@{}}
 \hline

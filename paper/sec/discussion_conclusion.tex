@@ -6,7 +6,7 @@ needle-hold scores, matching or exceeding a state-of-the-art VLM on all
 three sub-skills even when it received annotated windows and scored examples.
 The advantage was clearest for Needle Hold Angle, possibly because 3D
 estimation is less viewpoint-dependent than judging 2D appearance. Automatic
-event detection had little effect on performance.
+event detection had little effect.
 
 Most errors occurred near EASE score thresholds, though Depth of Needle Hold
 also showed errors farther away, possibly because jaws spanning only a few
@@ -16,7 +16,7 @@ requires no task-specific training: a replaceable general-purpose VLM handles
 perception, while geometry and scoring follow EASE criteria. This may ease
 application to other suturing videos with limited annotations.
 
-Limitations include a single physician rater: although EASE itself has
+Limitations include a single physician rater: although EASE has
 validated inter-rater reliability~\cite{Haque2022}, agreement on our data was
 not measured. The test set covers only four held-out surgeons, and keypoint
 and mask detection may degrade in vivo, although perception can be improved
