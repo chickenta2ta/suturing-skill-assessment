@@ -1,69 +1,90 @@
 \section{Experimental setup}
 \label{sec:setup}
 
+% Table 1 belongs to the results but is defined here: a table* can only appear
+% from the page after the one where it is defined, so defining it in the
+% results would push it past the four-page limit.
+\begin{table*}[htb]
+\centering
+\small
+\caption{Test results with the annotated assessment windows (76 stitches).
+The difference is ours minus direct VLM grading, with the 95\% confidence
+interval of the paired bootstrap.}
+\label{tab:main}
+\begin{tabular}{@{}lcccccc@{}}
+\hline
+& \multicolumn{2}{c}{Needle Hold Ratio} & \multicolumn{2}{c}{Needle Hold Angle}
+& \multicolumn{2}{c}{Depth of Needle Hold} \\
+Method & AUC & BA & AUC & BA & AUC & BA \\
+\hline
+Direct VLM grading & 0.848 & 0.764 & 0.845 & 0.753 & 0.884 & 0.533 \\
+Ours & \textbf{0.910} & \textbf{0.785} & \textbf{0.964} & \textbf{0.859}
+& \textbf{0.903} & \textbf{0.662} \\
+\hline
+Difference & $+$0.062 & $+$0.021 & $+$0.119 & $+$0.106 & $+$0.019 & $+$0.129 \\
+\quad 95\% CI & [0.00, 0.14] & [$-$0.05, 0.12] & [0.05, 0.23] & [$-$0.02, 0.22]
+& [$-$0.08, 0.10] & [$-$0.08, 0.34] \\
+\hline
+\end{tabular}
+\end{table*}
+
+
+
 \subsection{Data and annotations}
 \label{ssec:data}
 
-We use the Suturing task of the public JIGSAWS dataset~\cite{Gao2014}, recorded
-with the da Vinci Surgical System on a bench-top model. Eight surgeons (B--I),
-with self-reported skill from novice to expert, performed 39 trials in total,
-each consisting of four stitches. JIGSAWS also provides stereo video and robot
-kinematics, but to keep the method applicable to ordinary surgical videos, we
-use only the monocular video from one endoscope camera (capture1).
+We use the JIGSAWS suturing task~\cite{Gao2014}, comprising 39 bench-top
+robotic suturing trials of four stitches each, performed by eight surgeons
+with self-reported skill levels ranging from novice to expert. To support
+applicability to video-only settings, we use only monocular endoscopic video
+(capture1), excluding stereo video and robot kinematics.
 
-To rule out leakage, the surgeons are split four and four, each set having one
-expert, one intermediate, and two novices. Everything that involves a choice,
-namely designing the method, selecting the few-shot examples, and tuning
-parameters, is done on the development set (B, E, F, I; 16 trials, 64
-stitches). The test set (C, D, G, H) consists of all 19 trials of its surgeons
-(76 stitches) and is evaluated once, with everything fixed.
-
-A surgeon licensed in Japan annotated the events and the EASE~\cite{Haque2022}
-scores of every stitch, viewing only the same monocular video as the method.
+To prevent data leakage, surgeons are split into development (16 trials, 64
+stitches) and test sets (19 trials, 76 stitches), each with one expert, one
+intermediate, and two novices. All method design choices, few-shot examples,
+and parameters are fixed on the development set before a single test
+evaluation. A physician annotated events and EASE scores~\cite{Haque2022} for every
+stitch using only the capture1 video.
 
 \subsection{Implementation}
 \label{ssec:implementation}
 
-The events, keypoints, and needle masks are all obtained from one
-general-purpose VLM, GPT-6 Astra~\cite{OpenAI2026Astra}
-with medium reasoning effort (\texttt{gpt-6-astra}), used through the OpenAI API
-without any weight update. Each request gives the definitions, a few
-examples, and the frames to annotate, and the answer is returned as a
-structured output. The examples are taken from two other trials of the
-development surgeons, which are used for nothing else, including development.
-For events, the examples are the frames around each type of event in one of
-these trials. The video is processed at 5 fps, 20 s of frames per request,
-together with 10 s of frames on each side as context, in which no events are
-detected, and the events detected so far in the video as temporal
-information. For keypoints and masks, the examples are 20 frames of the other
-trial annotated with keypoints and needle masks, and the video is processed at
-10 fps, 20 frames per request, with the mask returned as polygons.
+Events, keypoints, and needle masks are generated using GPT-6
+Astra~\cite{OpenAI2026Astra} (\texttt{gpt-6-astra}, medium reasoning
+effort), a general-purpose VLM accessed via the OpenAI API without weight
+updates. Each request includes definitions, few-shot examples, and target
+frames and yields structured outputs. Examples come from two extra trials by
+development-set surgeons, used only for prompting, not method development or
+testing.
+
+For events, example frames around each event type come from one of these
+trials; detection uses 5 fps, 20 s requests, 10 s context on each side
+(excluded from detection), and previously detected events. For keypoints and
+masks, 20 annotated frames from the other trial serve as examples; processing
+uses 10 fps and 20-frame requests, returning polygon masks.
 
 \subsection{Baselines and metrics}
 \label{ssec:metrics}
 
-As a baseline, the same VLM scores the three hold sub-skills directly. It is
-given the frames of the annotated assessment window at 5 fps with 10 s of
-context on each side, the EASE criteria with notes defining each quantity, and
-three development stitches with their scores as examples, and returns a score,
-the probability of each score, and the value of each quantity. The baseline is
-thus given favorable conditions: human-annotated windows and scored examples.
+The baseline is given favorable conditions: the same VLM receives
+human-annotated assessment windows and three scored development stitches as
+examples, with EASE criteria and quantity definitions. It directly scores the three hold
+sub-skills from frames at 5 fps with 10 s of context on either side,
+returning a score, per-score probabilities, and quantity estimates.
 
-We evaluate in two settings. With the annotated assessment windows, scoring is
-evaluated apart from event detection and compared with the baseline on the
-same stitches. In the end-to-end setting, the events are also detected, and all
-four sub-skills are scored automatically. To compare with the labels, each
-annotated stitch is paired one to one with the detected stitch whose entry is
-nearest to its annotated entry, within the annotated stitch. Event detection
-is evaluated by F1 with a tolerance of 1 s.
+We evaluate two settings: annotated-window scoring, isolated from event
+detection and compared with the baseline on identical stitches; and
+end-to-end detection and scoring of all four sub-skills. Each annotated stitch
+is matched one-to-one to the detected stitch with the nearest entry within
+it. Event detection is evaluated by F1 with a 1-s tolerance over the four event
+types.
 
-For each sub-skill, we report the AUC of separating the best score (EASE 3;
-for Needle Hold Ratio, 2--3) from the others, as in~\cite{Deo2026}, and the
-balanced accuracy of the score, averaged over the scores present in the
-labels. For the AUC, our method ranks the stitches by the signed margin of the
-measured value to the EASE criterion of the best score, e.g.,
-$\min(\alpha_i-90^\circ,135^\circ-\alpha_i)$ for the angle, and the baseline
-by its probability of the best score. A stitch that cannot be scored counts as
-an error in both metrics. The 95\% confidence intervals are obtained by
-bootstrap resampling of videos, since the stitches of a video are correlated;
-differences between methods are resampled in pairs on the same stitches.
+We report AUC for distinguishing the best EASE score (3; 2--3 for Needle
+Hold Ratio) from others, as in~\cite{Deo2026}, and balanced accuracy averaged
+over observed score classes. For AUC, our method ranks stitches by the signed
+margin to the best-score criterion (e.g.,
+$\min(\alpha_i-90^\circ,135^\circ-\alpha_i)$ for angle), and the baseline by
+its best-score probability. Unscorable stitches count as errors in both
+metrics. We obtain 95\% confidence intervals by video-level bootstrapping to
+account for correlated stitches, using paired resampling for method
+differences.

@@ -28,6 +28,7 @@
 | System Card（2026-09-03） | `data/references/openai_gpt6_astra_system_card.pdf` |
 | イベント: 5 fps、1 リクエスト 20 s、前後 10 s の文脈、それまでのイベントを渡す | `astra_events.py`（EVENT_STEP=6, TARGET_SECONDS=20, CONTEXT_SECONDS=10） |
 | keypoint とマスク: 10 fps、20 フレーム／リクエスト、例は 20 フレーム | `astra_keypoints_and_masks.py`（FRAME_STEP=3, WINDOW=20）、`annotations/keypoint_fewshot_E003.json` |
+| （本文には書かない）実装は needle_retraction_end も検出し、few-shot 例にも 1 クリップある。検出した値は次のリクエストに渡す針の状態（組織内か）の判定にだけ使い、針の区切り・区間には使わない | `astra_events.py` の window_text、`needle_hold.py` の stitches |
 
 ## 比較手法と指標（3.3 Baselines and metrics）
 
@@ -35,7 +36,7 @@
 |---|---|
 | 直接採点: 評価対象区間を 5 fps、前後 10 s、EASE 基準と補足、開発用 3 針の点数付き例、点数・確率・値を返す | 公開リポ `docs/astra_ease.md`、`results/test/astra_ease/` |
 | 予測区間の対応: 人手の針の区間（前の引き抜き終了の後〜その針の引き抜き終了）に検出の刺入がある針と1対1で対応、複数なら刺入が最も近いもの | `data/paper_analysis/final/analysis_final.py` の match_pred（TOL=−1） |
-| イベント検出の F1、許容 1 s | `data/paper_analysis/paper/event_detection.txt` |
+| イベント検出の F1、許容 1 s、4 イベントで集計 | `data/paper_analysis/final/event_f1.py` → `event_f1_{dev,test}.txt`（5 種での集計は旧 `paper/event_detection.txt` と一致） |
 | AUC: 陽性 = EASE 3（Ratio は 2–3）、順位は EASE 基準への符号付きマージン、直接採点は陽性クラスの確率 | `data/paper_analysis/final/README.md`、`analysis_final.py` |
 | 測れなかった針は両指標で誤り（AUC は最悪順位）。該当は全条件で 0 針 | `final/analysis_{dev,test}.txt` の missing 行 |
 | 動画単位ブートストラップ（本文に回数は書かない。実際は 2000 回）、差は対応あり | `analysis_final.py`（B = 2000） |
@@ -62,7 +63,7 @@
 | Table 3（完全自動、4 項目の AUC・BA と 95% 区間） | `data/paper_analysis/final/analysis_test.txt` の main metrics（ours_pred） |
 | Angle の差 AUC +0.119（95% CI 0.05–0.23）、EASE 1 の再現率 0.58（直接採点）vs 0.83（我々） | `final/analysis_test.txt` の paired differences（astra Angle AUC −0.119 [−0.23, −0.05]）と main metrics の recall |
 | 5 fps のフレームだけで計測しても test の AUC の変化は 0.04 未満（Ratio +0.032, Angle −0.007, Depth +0.015） | `final/paired_fps_test.txt` |
-| イベント検出 F1 0.89（test、許容 1 s） | `data/paper_analysis/paper/event_detection.txt` の test 行 |
+| イベント検出 F1 0.89（test、許容 1 s、本文の 4 イベントで集計: TP 376／pred 421／gt 425 → 0.889。retraction end 込みの 5 種でも 0.888） | `data/paper_analysis/final/event_f1_test.txt`（`event_f1.py`） |
 | 76/76 針が対応、余分な検出 1、刺入誤差の中央値 0.28 s | `final/analysis_test.txt` の冒頭（predicted stitches 77, matched 76/76） |
 | 人手区間との AUC の差は最大 0.012（Ratio +0.011, Angle +0.002, Depth −0.012） | `final/analysis_test.txt` の paired differences（ours_pred） |
 | 5 Discussion: 誤りのうちしきい値の近く Ratio 15/17（0.05 以内）、Angle 9/10（10° 以内）、Depth は遠い誤り 8/17（0.05 以内は 9/17） | `data/paper_analysis/fig2/fig2_drafts.py`（公開リポを入力、標準出力の "ours wrong … within … of a threshold"）。誤り = 我々の点数（Ratio は good/poor）≠ 正解、距離 = 計測値から最も近い EASE のしきい値まで |

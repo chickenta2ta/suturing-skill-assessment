@@ -16,29 +16,6 @@ paired with a detected stitch (median entry error 0.28~s), with one extra
 detection. The AUCs differ by at most 0.012 from those with the annotated
 windows, and all four sub-skills are scored from the video alone.
 
-\begin{table*}[htb]
-\centering
-\small
-\caption{Test results with the annotated assessment windows (76 stitches).
-The difference is ours minus direct VLM grading, with the 95\% confidence
-interval of the paired bootstrap.}
-\label{tab:main}
-\begin{tabular}{@{}lcccccc@{}}
-\hline
-& \multicolumn{2}{c}{Needle Hold Ratio} & \multicolumn{2}{c}{Needle Hold Angle}
-& \multicolumn{2}{c}{Depth of Needle Hold} \\
-Method & AUC & BA & AUC & BA & AUC & BA \\
-\hline
-Direct VLM grading & 0.848 & 0.764 & 0.845 & 0.753 & 0.884 & 0.533 \\
-Ours & \textbf{0.910} & \textbf{0.785} & \textbf{0.964} & \textbf{0.859}
-& \textbf{0.903} & \textbf{0.662} \\
-\hline
-Difference & $+$0.062 & $+$0.021 & $+$0.119 & $+$0.106 & $+$0.019 & $+$0.129 \\
-\quad 95\% CI & [0.00, 0.14] & [$-$0.05, 0.12] & [0.05, 0.23] & [$-$0.02, 0.22]
-& [$-$0.08, 0.10] & [$-$0.08, 0.34] \\
-\hline
-\end{tabular}
-\end{table*}
 
 \begin{table}[htb]
 \centering
