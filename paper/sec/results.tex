@@ -6,10 +6,14 @@ annotated assessment windows. Our method achieved higher AUC and balanced
 accuracy for all three hold sub-skills. For Needle Hold Angle, the AUC
 difference was $+0.119$ (95\% CI 0.047--0.226), with EASE 1 recall of 0.83
 versus 0.58 for the VLM. For the other two sub-skills, the AUC-difference
-confidence intervals included zero. Our method uses frames at 10 fps and the
-baseline at 5 fps; to show that this difference does not drive the
-comparison, we restricted our method to the baseline's 5-fps frames, which
-changed its test AUCs by less than 0.04.
+confidence intervals included zero. Applying our EASE thresholds to the
+VLM's own quantity estimates reproduced its direct scores on every stitch
+(Table~\ref{tab:main}), so the difference lies in the estimated quantities,
+not in the scoring rule. Our method uses frames at 10 fps and the baseline at
+5 fps; to show that this difference does not drive the comparison, we
+restricted our method to the baseline's 5-fps frames, which changed its test
+AUCs by less than 0.04 and kept the differences (Ratio $+$0.094 [0.027,
+0.180], Angle $+$0.111 [0.045, 0.204], Depth $+$0.034 [$-$0.035, 0.114]).
 
 Table~\ref{tab:e2e} reports end-to-end scoring with automatic event detection
 (F1 = 0.89). All annotated stitches were matched to detections (median entry

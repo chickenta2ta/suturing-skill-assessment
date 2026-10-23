@@ -7,6 +7,7 @@
 \begin{table*}[htb]
 \centering
 \small
+\setlength{\tabcolsep}{4pt}
 \caption{Test results with the annotated windows (76 stitches). Difference:
 ours minus direct VLM grading, with 95\% CI.}
 \label{tab:main}
@@ -17,6 +18,7 @@ ours minus direct VLM grading, with 95\% CI.}
 Method & AUC & BA & AUC & BA & AUC & BA \\
 \hline
 Direct VLM grading & 0.848 & 0.764 & 0.845 & 0.753 & 0.884 & 0.533 \\
+VLM estimates + EASE rules & 0.854 & 0.764 & 0.761 & 0.753 & 0.889 & 0.533 \\
 Ours & \textbf{0.910} & \textbf{0.785} & \textbf{0.964} & \textbf{0.859}
 & \textbf{0.903} & \textbf{0.662} \\
 \hline
@@ -85,7 +87,8 @@ Hold Ratio) from others, as in~\cite{Deo2026}, and balanced accuracy averaged
 over observed score classes. For AUC, our method ranks stitches by the signed
 margin to the best-score criterion (e.g.,
 $\min(\alpha_i-90^\circ,135^\circ-\alpha_i)$ for angle), and the baseline by
-its best-score probability. Unscorable stitches count as errors in both
+its best-score probability; its quantity estimates are ranked by the same
+margin. Unscorable stitches count as errors in both
 metrics. We obtain 95\% confidence intervals by video-level bootstrapping to
 account for correlated stitches, using paired resampling for method
 differences.
