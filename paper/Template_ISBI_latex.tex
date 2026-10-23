@@ -18,6 +18,17 @@
 \setlength{\dblfloatsep}{10pt plus 2pt minus 2pt}
 \setlength{\intextsep}{10pt plus 2pt minus 2pt}
 
+% Space above a figure caption: 6pt instead of the 10pt of spconf. Table
+% captions keep the 10pt.
+\makeatletter
+\long\def\@makecaption#1#2{
+ \def\@tempa{figure}\ifx\@captype\@tempa \vskip 6pt\else \vskip 10pt\fi
+ \setbox\@tempboxa\hbox{#1. #2}
+ \ifdim \wd\@tempboxa >\hsize #1. #2\par \else \hbox
+to\hsize{\hfil\box\@tempboxa\hfil}
+ \fi}
+\makeatother
+
 \usepackage{mwe} % to get dummy images
 
 % Placeholders for the parts not written yet. Remove before submission.
