@@ -2,17 +2,18 @@
 Fine-grained surgical skill assessment can provide targeted feedback, but
 manual evaluation is time-consuming. Existing approaches to automating such
 assessment often predict scores directly without explicitly deriving
-quantitative measures linked to assessment criteria. We propose an
-event-guided method that estimates three needle-hold measures from monocular
-suturing videos and maps them to End-to-End Assessment of Suturing Expertise
-(EASE) scores. A general-purpose vision--language model (VLM), prompted with a
-few examples, detects events and provides keypoints and needle masks without
-task-specific training. Within event-defined assessment windows, geometric
-analysis estimates Needle Hold Ratio, Needle Hold Angle, and Depth of Needle
-Hold, with each score traceable to its source frames and measurements. On
-surgeon-disjoint JIGSAWS test data, fully automated scoring achieved AUCs of
-0.89--0.97 against physician ratings, matching or exceeding a state-of-the-art
-VLM given annotated windows and scored examples.
+quantitative measures linked to assessment criteria. Rather than predicting
+scores, we propose an event-guided method that measures three needle-hold
+quantities from monocular suturing videos and maps them to End-to-End
+Assessment of Suturing Expertise (EASE) scores. A general-purpose
+vision--language model (VLM), prompted with a few examples, detects events and
+provides keypoints and needle masks without task-specific training. Within
+event-defined assessment windows, geometric analysis estimates Needle Hold
+Ratio, Needle Hold Angle, and Depth of Needle Hold, with each score traceable
+to its source frames and measurements. On surgeon-disjoint JIGSAWS test data,
+fully automated scoring achieved AUCs of 0.89--0.97 against physician
+ratings, matching or exceeding a state-of-the-art VLM given annotated windows
+and scored examples.
 \end{abstract}
 %
 \begin{keywords}
