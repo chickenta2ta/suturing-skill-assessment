@@ -1,18 +1,18 @@
 \begin{abstract}
-Surgical training needs objective assessment of suturing skill, and rating
-tools such as EASE assess how a surgeon holds the needle against defined
-criteria. Rating every stitch by hand is costly, and automatic scoring so far
-predicts the score end to end, as a black box. We propose to
-measure rather than predict: EASE defines its criteria geometrically, and we
-measure what they define. Detected events divide a monocular suturing video
-into stitches and into the window that each criterion refers to. In that
-window, keypoints and needle masks from a general-purpose vision--language
-model, given a few examples, yield the grasp position, the hold angle, and
-the hold depth in 3D, which the EASE criteria turn into scores. Every score
-is thus traceable to the frames and the value behind it. On JIGSAWS, running
-fully automatically from the raw video to the scores, the method reproduces a
-surgeon's EASE scores with AUC 0.89--0.97, at least as well as direct grading
-by a state-of-the-art VLM.
+Fine-grained surgical skill assessment can provide targeted feedback, but
+manual evaluation is time-consuming. Existing approaches to automating such
+assessment often predict scores directly without explicitly deriving
+quantitative measures linked to assessment criteria. We propose an
+event-guided method that estimates three needle-hold measures from monocular
+suturing videos and maps them to End-to-End Assessment of Suturing Expertise
+(EASE) scores. A general-purpose vision--language model (VLM), prompted with a
+few examples, detects events and provides keypoints and needle masks without
+task-specific training. Within event-defined assessment windows, geometric
+analysis estimates Needle Hold Ratio, Needle Hold Angle, and Depth of Needle
+Hold, with each score traceable to its source frames and measurements. On
+surgeon-disjoint JIGSAWS test data, fully automated scoring achieved AUCs of
+0.89--0.97 against physician ratings, matching or exceeding a state-of-the-art
+VLM given annotated windows and scored examples.
 \end{abstract}
 %
 \begin{keywords}
