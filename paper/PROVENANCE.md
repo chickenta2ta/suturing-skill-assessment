@@ -63,7 +63,7 @@
 | Table 1（tab:main、人手の評価対象区間、直接採点 vs 我々、AUC・BA と 95% 区間、差 = 我々 − 直接採点） | `data/paper_analysis/final/analysis_test.txt` の main metrics（ours, astra）と paired differences（astra − ours の符号を反転）。差の CI は 3 桁（2026-10-23 に `analysis_final.py` の表示を 3 桁にして `analysis_*.txt` を再生成） |
 | Table 2（tab:e2e、完全自動、4 項目の AUC・BA と 95% 区間） | `data/paper_analysis/final/analysis_test.txt` の main metrics（ours_pred） |
 | Angle の差 AUC +0.119（95% CI 0.047–0.226）、EASE 1 の再現率 0.58（直接採点）vs 0.83（我々） | `final/analysis_test.txt` の paired differences（astra Angle AUC −0.119 [−0.226, −0.047]）と main metrics の recall |
-| 5 fps のフレームだけで計測しても test の AUC の変化は 0.04 未満（Ratio +0.032, Angle −0.007, Depth +0.015） | `final/paired_fps_test.txt` |
+| 5 fps のフレームだけで計測しても test の AUC の変化は最大 0.032（Ratio +0.032, Angle −0.007, Depth +0.015。2026-10-24 に「0.04 未満」から、表の差と同じ 3 桁の厳密な上限に揃えた） | `final/paired_fps_test.txt` |
 | イベント検出 F1 0.89（test、許容 1 s、本文の 4 イベントで集計: TP 376／pred 421／gt 425 → 0.889。retraction end 込みの 5 種でも 0.888） | `data/paper_analysis/final/event_f1_test.txt`（`event_f1.py`） |
 | 76/76 針が対応、余分な検出 1、刺入誤差の中央値 0.28 s | `final/analysis_test.txt` の冒頭（predicted stitches 77, matched 76/76） |
 | 人手区間との AUC の差は最大 0.013（本文。対応ありの差は Ratio +0.011, Angle +0.002, Depth −0.012 で最大 0.012 だが、Table 1・2 の丸めた値の引き算は Depth で 0.903 − 0.890 = 0.013 になるため、表と合う上限 0.013 を書く。2026-10-24） | `final/analysis_test.txt` の paired differences（ours_pred） |
