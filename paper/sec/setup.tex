@@ -32,9 +32,9 @@ with self-reported skill levels ranging from novice to expert. To support
 applicability to video-only settings, we use only monocular endoscopic video
 (capture1), excluding stereo video and robot kinematics.
 
-To prevent data leakage, surgeons are split into development (16 trials, 64
-stitches) and test sets (19 trials, 76 stitches), each with one expert, one
-intermediate, and two novices. All method design choices, few-shot examples,
+To prevent data leakage, surgeons are split into development (four trials each, 64 stitches)
+and test sets (all 19 trials, 76 stitches), each with one expert, one
+intermediate, and two novices. All design choices, few-shot examples,
 and parameters are fixed on the development set before a single test
 evaluation. A physician annotated events and EASE scores~\cite{Haque2022} for every
 stitch using only the capture1 video.

@@ -10,7 +10,7 @@
 | JIGSAWS は da Vinci、ベンチトップモデル、術者 8 人、Suturing 39 試行 | PMC7671974（JIGSAWS を解析した論文。JIGSAWS 公式ページと Gao 2014 の PDF は 403 で未取得） |
 | 自己申告の技能（初心者 B, G, H, I／中級 C, F／熟練 D, E）、各組が熟練 1・中級 1・初心者 2 | PMC7671974、公開リポ `docs/dataset.md` |
 | 1 試行 4 針 | `annotations/events_and_ease.json`（公開リポ）: 使った 35 試行で needle_withdrawal_end が各 4（計 140） |
-| 開発用 B, E, F, I（16 試行、64 針）、テスト用 C, D, G, H（19 試行、76 針） | 公開リポ `configs/split.yaml`、`docs/dataset.md`、`annotations/events_and_ease.json` |
+| 開発用 B, E, F, I（術者ごとに 4 試行 = 16 試行、64 針。few-shot の 2 本を除き GRS 上位 2・下位 2 を選ぶので F と I の各 1 試行は未使用）、テスト用 C, D, G, H（全 19 試行、76 針） | 公開リポ `configs/split.yaml`、`docs/dataset.md`、`annotations/events_and_ease.json` |
 | few-shot の 2 試行（B001, E003）は他に使わない | 公開リポ `docs/dataset.md` |
 
 ## EASE の基準（2.1、2.3–2.5）
@@ -66,7 +66,7 @@
 | 5 fps のフレームだけで計測しても test の AUC の変化は 0.04 未満（Ratio +0.032, Angle −0.007, Depth +0.015） | `final/paired_fps_test.txt` |
 | イベント検出 F1 0.89（test、許容 1 s、本文の 4 イベントで集計: TP 376／pred 421／gt 425 → 0.889。retraction end 込みの 5 種でも 0.888） | `data/paper_analysis/final/event_f1_test.txt`（`event_f1.py`） |
 | 76/76 針が対応、余分な検出 1、刺入誤差の中央値 0.28 s | `final/analysis_test.txt` の冒頭（predicted stitches 77, matched 76/76） |
-| 人手区間との AUC の差は最大 0.012（Ratio +0.011, Angle +0.002, Depth −0.012） | `final/analysis_test.txt` の paired differences（ours_pred） |
+| 人手区間との AUC の差は最大 0.013（本文。対応ありの差は Ratio +0.011, Angle +0.002, Depth −0.012 で最大 0.012 だが、Table 1・2 の丸めた値の引き算は Depth で 0.903 − 0.890 = 0.013 になるため、表と合う上限 0.013 を書く。2026-10-24） | `final/analysis_test.txt` の paired differences（ours_pred） |
 | 5 Discussion: 誤りのうちしきい値の近く Ratio 15/17（0.05 以内）、Angle 9/10（10° 以内）、Depth は遠い誤り 8/17（0.05 以内は 9/17） | `data/paper_analysis/fig2/fig2_drafts.py`（公開リポを入力、標準出力の "ours wrong … within … of a threshold"）。誤り = 我々の点数（Ratio は good/poor）≠ 正解、距離 = 計測値から最も近い EASE のしきい値まで |
 | 5 Discussion: 顎は画像で数十画素 | `~/Downloads/parts_H004_2409.png` の jaw length（30〜55 px）。H004 の 1 針の例 |
 | 5 Discussion: EASE の評価者間信頼性は中程度以上 | Haque 2022 の Abstract・Results（ICC 中央値 0.69、範囲 0.51–0.97、PABAK 0.77）、`data/references/haque2022.txt` |
