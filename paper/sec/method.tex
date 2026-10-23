@@ -68,6 +68,34 @@ where $F_i$ is the set of frames of $W_i$ in which the needle tip and mask are
 observed. No needle size, needle shape, or camera calibration is given; the
 stitches with a clearly visible needle constrain its shape for the others.
 
+% Table 1 belongs to the results but is defined here, on page 2: a table* can
+% only appear from the page after the one where it is defined, so this puts it
+% at the top of page 3 instead of page 4.
+\begin{table*}[htb]
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\caption{Test results with the annotated windows (76 stitches). Difference:
+ours minus direct VLM grading, with 95\% CI.}
+\label{tab:main}
+\begin{tabular}{@{}lcccccc@{}}
+\hline
+& \multicolumn{2}{c}{Needle Hold Ratio} & \multicolumn{2}{c}{Needle Hold Angle}
+& \multicolumn{2}{c}{Depth of Needle Hold} \\
+Method & AUC & BA & AUC & BA & AUC & BA \\
+\hline
+Direct VLM grading & 0.848 & 0.764 & 0.845 & 0.753 & 0.884 & 0.533 \\
+VLM estimates + EASE rules & 0.854 & 0.764 & 0.761 & 0.753 & 0.889 & 0.533 \\
+Ours & \textbf{0.910} & \textbf{0.785} & \textbf{0.964} & \textbf{0.859}
+& \textbf{0.903} & \textbf{0.662} \\
+\hline
+Difference & $+$0.062 & $+$0.021 & $+$0.119 & $+$0.106 & $+$0.019 & $+$0.129 \\
+\quad 95\% CI & [$-$0.005, 0.145] & [$-$0.049, 0.119] & [0.047, 0.226]
+& [$-$0.022, 0.221] & [$-$0.081, 0.104] & [$-$0.080, 0.337] \\
+\hline
+\end{tabular}
+\end{table*}
+
 \subsection{Needle Hold Angle}
 \label{ssec:angle}
 

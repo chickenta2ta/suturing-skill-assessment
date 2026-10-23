@@ -1,33 +1,24 @@
 \section{Experimental setup}
 \label{sec:setup}
 
-% Table 1 belongs to the results but is defined here: a table* can only appear
-% from the page after the one where it is defined, so defining it in the
-% results would push it past the four-page limit.
-\begin{table*}[htb]
+% Table 2 belongs to the results but is defined here so that it floats to the
+% top of a column on page 3 rather than crowding page 4.
+\begin{table}[t]
 \centering
 \small
-\setlength{\tabcolsep}{4pt}
-\caption{Test results with the annotated windows (76 stitches). Difference:
-ours minus direct VLM grading, with 95\% CI.}
-\label{tab:main}
-\begin{tabular}{@{}lcccccc@{}}
+\caption{End-to-end test results (76 stitches).}
+\label{tab:e2e}
+\begin{tabular}{@{}lcc@{}}
 \hline
-& \multicolumn{2}{c}{Needle Hold Ratio} & \multicolumn{2}{c}{Needle Hold Angle}
-& \multicolumn{2}{c}{Depth of Needle Hold} \\
-Method & AUC & BA & AUC & BA & AUC & BA \\
+Sub-skill & AUC & BA \\
 \hline
-Direct VLM grading & 0.848 & 0.764 & 0.845 & 0.753 & 0.884 & 0.533 \\
-VLM estimates + EASE rules & 0.854 & 0.764 & 0.761 & 0.753 & 0.889 & 0.533 \\
-Ours & \textbf{0.910} & \textbf{0.785} & \textbf{0.964} & \textbf{0.859}
-& \textbf{0.903} & \textbf{0.662} \\
-\hline
-Difference & $+$0.062 & $+$0.021 & $+$0.119 & $+$0.106 & $+$0.019 & $+$0.129 \\
-\quad 95\% CI & [$-$0.005, 0.145] & [$-$0.049, 0.119] & [0.047, 0.226]
-& [$-$0.022, 0.221] & [$-$0.081, 0.104] & [$-$0.080, 0.337] \\
+Needle Repositions & 0.974 & 0.791 \\
+Needle Hold Ratio & 0.921 & 0.803 \\
+Needle Hold Angle & 0.966 & 0.878 \\
+Depth of Needle Hold & 0.890 & 0.655 \\
 \hline
 \end{tabular}
-\end{table*}
+\end{table}
 
 
 
