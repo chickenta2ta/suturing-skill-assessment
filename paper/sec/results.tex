@@ -74,3 +74,40 @@ Median error (px) & 1.3 & 3.1 & 1.8 & 8.5 & 4.1 \\
 \hline
 \end{tabular}
 \end{table}
+
+Table~\ref{tab:ablation} compares simpler measurements from the same
+keypoints. In 2D, the result depended on the frame: measuring over all frames
+lowered the AUC by 0.06--0.19, selecting the least foreshortened frame
+recovered most of it, and the 2D angle's AUC fell from 0.91 in the first frame
+of a hold to 0.41 in the last as the needle turned toward the tissue. The 3D
+estimates were more robust to the viewpoint: they used all frames, varied less
+within a hold, and kept an AUC of 0.91--0.92 from the first frame to the last.
+
+\begin{table}[t]
+\centering
+\small
+\setlength{\tabcolsep}{3pt}
+\caption{Simpler measurements from the same keypoints and windows (test):
+AUC / BA and the median within-hold IQR of per-frame values. Shading: rank
+within a column, from the best (darkest) to the worst (none).
+Best frame: most face-on needle, longest needle segment, or longest jaws.
+Bold: ours, which uses no 3D for depth.}
+\label{tab:ablation}
+\begin{tabular}{@{}lcccccc@{}}
+\hline
+& \multicolumn{2}{c}{Ratio} & \multicolumn{2}{c}{Angle} & \multicolumn{2}{c}{Depth} \\
+& AUC & BA & AUC & BA & AUC & BA \\
+\hline
+2D, all frames & 0.845 & 0.730 & 0.772 & 0.639 & 0.769 & 0.559 \\
+2D, best frame & \cellcolor{tabblue!15}0.902 & \cellcolor{tabblue!30}0.800
+& \cellcolor{tabblue!15}0.933 & \cellcolor{tabblue!30}0.870
+& \cellcolor{tabblue!30}\textbf{0.903} & \cellcolor{tabblue!30}\textbf{0.662} \\
+3D, all frames & \cellcolor{tabblue!30}\textbf{0.910} & \cellcolor{tabblue!15}\textbf{0.785}
+& \cellcolor{tabblue!30}\textbf{0.964} & \cellcolor{tabblue!15}\textbf{0.859} & -- & -- \\
+\hline
+IQR, 2D & \multicolumn{2}{c}{0.11} & \multicolumn{2}{c}{22$^\circ$} & \multicolumn{2}{c}{0.14} \\
+IQR, 3D & \multicolumn{2}{c}{\cellcolor{tabblue!30}0.07} & \multicolumn{2}{c}{\cellcolor{tabblue!30}7$^\circ$}
+& \multicolumn{2}{c}{--} \\
+\hline
+\end{tabular}
+\end{table}
