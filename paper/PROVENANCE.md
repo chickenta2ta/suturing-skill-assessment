@@ -28,6 +28,7 @@
 | System Card（2026-09-03） | `data/references/openai_gpt6_astra_system_card.pdf` |
 | イベント: 5 fps、1 リクエスト 20 s、前後 10 s の文脈、それまでのイベントを渡す | `astra_events.py`（EVENT_STEP=6, TARGET_SECONDS=20, CONTEXT_SECONDS=10） |
 | keypoint とマスク: 10 fps、20 フレーム／リクエスト、例は 20 フレーム | `astra_keypoints_and_masks.py`（FRAME_STEP=3, WINDOW=20）、`annotations/keypoint_fewshot_E003.json` |
+| end-to-end の推論は 1 試行（約 2 分）あたり約 US$11（OpenAI Batch API） | 試験 19 本の実績: イベント検出 `data/astra_events_run/status.json` の cost 合計 $42.05 ＋ keypoint・マスク `data/astra_kpm_test/cost.json` $161.13 ＝ $203.18、÷19 ＝ $10.69。単価は `tools/run_events.py`・`run_keypoints.py` の cost_of（入力 $10/M、キャッシュ入力 $1/M、出力 $50/M、Batch で半額）。動画長は `data/videos` を OpenCV で読んで平均 115.7 s（60〜301 s）。集計は `data/paper_analysis/final/api_cost.py data` |
 | （本文には書かない）実装は needle_retraction_end も検出し、few-shot 例にも 1 クリップある。検出した値は次のリクエストに渡す針の状態（組織内か）の判定にだけ使い、針の区切り・区間には使わない | `astra_events.py` の window_text、`needle_hold.py` の stitches |
 
 ## 比較手法と指標（3.3 Baselines and metrics）

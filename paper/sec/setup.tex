@@ -61,6 +61,8 @@ trials; detection uses 5 fps, 20 s requests, 10 s context on each side
 (excluded from detection), and previously detected events. For keypoints and
 masks, 20 annotated frames from the other trial serve as examples; processing
 uses 10 fps and 20-frame requests, returning polygon masks.
+Via the OpenAI Batch API, the whole pipeline cost about US\$11 per trial of
+about two minutes; a locally trained perception model would remove this cost.
 
 \subsection{Baselines and metrics}
 \label{ssec:metrics}
