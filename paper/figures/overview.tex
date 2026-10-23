@@ -1,12 +1,10 @@
-% Fig. 1 (overview.pdf): part (a) over part (b), joined by a 0.4 pt rule with 4.5 pt of ink above and below it
-% (each part keeps a 1 pt margin inside its PDF). Built by make_overview.sh.
+% Fig. 1 (overview.pdf): part (a) over part (b), 9 pt of ink apart (each part keeps a 1 pt margin inside its PDF;
+% the rule between them was dropped on 2026-10-23). Built by make_overview.sh.
 \documentclass[border=0pt]{standalone}
 \usepackage{graphicx}
 \begin{document}
 \vbox{%
   \hbox{\includegraphics{overview_perception}}%
-  \vskip 3.5pt
-  \hrule height 0.4pt
-  \vskip 3.5pt
+  \vskip 7pt
   \hbox{\includegraphics{overview_measurement}}}
 \end{document}
