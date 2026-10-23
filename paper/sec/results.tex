@@ -38,7 +38,7 @@ Keypoints and needle masks were annotated in 46 frames of one test trial
 (Table~\ref{tab:perception}). Needle and jaw
 tips lay within 2 px (median), whereas the jaw base, the least precise
 point, shifted toward the wrist by 0.21 jaw lengths (median). The needle
-mask reached a mean surface Dice~\cite{Nikolov2021} of 0.81 at a 3-px
+mask had a mean surface Dice~\cite{Nikolov2021} of 0.81 at a 3-px
 tolerance, half the needle width, over the 34 frames with a visible needle, a
 boundary metric suited to thin structures~\cite{MaierHein2024}.
 
@@ -64,7 +64,8 @@ lowered the AUC by 0.07--0.19, selecting the least foreshortened frame
 recovered most of it, and the 2D angle's AUC fell from 0.90 in the first frame
 of a hold to 0.41 in the last as the needle turned toward the tissue. The 3D
 estimates were more robust to the viewpoint: they used all frames, varied less
-within a hold, and kept an AUC of 0.91--0.92 from the first frame to the last.
+within a hold, and the 3D angle kept an AUC of 0.91--0.92 from the first
+frame to the last.
 
 \begin{table}[t]
 \centering
@@ -72,8 +73,8 @@ within a hold, and kept an AUC of 0.91--0.92 from the first frame to the last.
 \setlength{\tabcolsep}{5pt}
 \setlength{\shadeoh}{\tabcolsep}\addtolength{\shadeoh}{0.4pt}
 \caption{Simpler measurements from the same keypoints and windows (test):
-AUC / BA and median within-hold IQR of per-frame values. Shading: rank
-within a column (darkest is best).
+AUC / BA and median within-hold IQR of per-frame values (ratio: single-frame
+fits). Shading: rank within a column (darkest is best).
 Best frame: most face-on needle, longest needle segment, or longest jaws.
 Bold: ours (no 3D for depth).}
 \label{tab:ablation}
