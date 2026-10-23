@@ -2,7 +2,17 @@
 % appear on the page where it is defined in two-column mode, so the figure is
 % appended to the title block that spconf typesets with \twocolumn[...].
 \makeatletter
-\g@addto@macro\@maketitle{%
+% spconf's \@maketitle with two gaps reduced: the blank row between the authors
+% and the affiliations becomes 0.3em, and the 1.5em below the affiliations
+% becomes 0.5em. The title position is unchanged.
+\def\@maketitle{\newpage
+ \null
+ \vskip 2em \begin{center}
+ {\large \bf \@title \par} \vskip 1.5em {\large \lineskip .5em
+\begin{tabular}[t]{c}\@name[0.3em] \@address
+ \end{tabular}\par} \end{center}
+ \par
+ \vskip 0.5em
   \noindent\includegraphics{figures/overview}\par
   \refstepcounter{figure}%
   \def\@captype{figure}%
