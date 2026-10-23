@@ -29,6 +29,13 @@ to\hsize{\hfil\box\@tempboxa\hfil}
  \fi}
 \makeatother
 
+% Space around headings: a little less than the article defaults
+% (section 3.5ex before, 2.3ex after; subsection 3.25ex before, 1.5ex after).
+\makeatletter
+\renewcommand\section{\@startsection{section}{1}{\z@}{-3ex plus -1ex minus -.2ex}{1.8ex plus .2ex}{\normalfont\Large\bfseries}}
+\renewcommand\subsection{\@startsection{subsection}{2}{\z@}{-2.5ex plus -1ex minus -.2ex}{1ex plus .2ex}{\normalfont\large\bfseries}}
+\makeatother
+
 \usepackage{mwe} % to get dummy images
 
 % Placeholders for the parts not written yet. Remove before submission.
