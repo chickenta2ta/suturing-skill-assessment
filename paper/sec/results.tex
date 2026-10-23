@@ -1,23 +1,28 @@
 \section{Results}
 \label{sec:results}
 
-Table~\ref{tab:main} compares our method with direct VLM grading on the
-annotated assessment windows. Despite the favorable conditions given to the
-baseline, our method has a higher AUC and balanced accuracy for all three
-sub-skills. The difference is clearest for Needle Hold Angle (AUC $+0.119$,
-95\% CI 0.05--0.23), where the baseline misses many poor holds (recall of
-EASE 1: 0.58 versus 0.83); for the other two, the intervals are not clearly
-above zero, so our method is at least on par. Measuring from the 5-fps frames
-only, as the baseline sees them, changes our test AUCs by less than 0.04.
+Table~\ref{tab:main} compares our method with direct VLM grading using
+annotated assessment windows. Our method achieved higher AUC and balanced
+accuracy for all three hold sub-skills. For Needle Hold Angle, the AUC
+difference was $+0.119$ (95\% CI 0.047--0.226), with EASE 1 recall of 0.83
+versus 0.58 for the VLM. For the other two sub-skills, the AUC-difference
+confidence intervals included zero. Our method uses frames at 10 fps and the
+baseline at 5 fps; to show that this difference does not drive the
+comparison, we restricted our method to the baseline's 5-fps frames, which
+changed its test AUCs by less than 0.04.
 
-Table~\ref{tab:e2e} shows the end-to-end results, in which the events are also
-detected. Event detection reaches an F1 of 0.89, and every annotated stitch is
-paired with a detected stitch (median entry error 0.28~s), with one extra
-detection. The AUCs differ by at most 0.012 from those with the annotated
-windows, and all four sub-skills are scored from the video alone.
+Table~\ref{tab:e2e} reports end-to-end scoring with automatic event detection
+(F1 = 0.89). All annotated stitches were matched to detections (median entry
+error 0.28~s), with one extra detection. AUCs differed by at most 0.012 from
+annotated-window scoring, and all four sub-skills were scored
+automatically from video alone.
 
+For each ground-truth score, measurements clustered within its EASE-defined
+range (Fig.~\ref{fig:values}). Of the misclassified stitches, 15 of 17 for
+Needle Hold Ratio and 9 of 17 for Depth of Needle Hold were within 0.05 of a
+threshold; 9 of 10 for Needle Hold Angle were within 10$^\circ$.
 
-\begin{table}[htb]
+\begin{table}[t]
 \centering
 \small
 \caption{End-to-end test results with detected events (76 stitches).}
@@ -34,3 +39,11 @@ Depth of Needle Hold & 0.890 & 0.655 \\
 \end{tabular}
 \end{table}
 
+\begin{figure}[t]
+\centering
+\includegraphics{figures/values_vs_ground_truth}
+\caption{Measured values of the 76 test stitches against the EASE ground
+truth, one row per ground-truth score; the gray range is where EASE gives
+that score.}
+\label{fig:values}
+\end{figure}
