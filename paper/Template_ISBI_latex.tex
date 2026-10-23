@@ -6,6 +6,17 @@
 \usepackage{spconf,amsmath,graphicx,url}
 \usepackage[table]{xcolor}
 \definecolor{tabblue}{HTML}{1F77B4} % tab10 blue, as in the figures
+% Shaded table cell: \shade{tint} fills the cell with tabblue!tint like \cellcolor, but with explicit overhangs.
+% The fill overlaps the cell to its left by 0.4 pt (\shadeoh = \tabcolsep + 0.4pt, set in each shaded table) so
+% that adjacent fills show no hairline seam; \shadelast has no right overhang, for the last column of a table set
+% with @{}. (\cellcolor itself takes no overhang arguments; only \columncolor does.)
+\newlength{\shadeoh}
+\makeatletter
+\newcommand{\shadecell}[3]{\gdef\CT@cell@color{\@tempdimb#2\relax\@tempdimc#3\relax
+  \CT@color{tabblue!#1}\global\let\CT@cell@color\relax}}
+\makeatother
+\newcommand{\shade}[1]{\shadecell{#1}{\shadeoh}{\tabcolsep}}
+\newcommand{\shadelast}[1]{\shadecell{#1}{\shadeoh}{0pt}}
 
 % It's fine to compress itemized lists if you used them in the
 % manuscript

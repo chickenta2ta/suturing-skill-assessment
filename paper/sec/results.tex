@@ -69,7 +69,8 @@ within a hold, and kept an AUC of 0.91--0.92 from the first frame to the last.
 \begin{table}[t]
 \centering
 \small
-\setlength{\tabcolsep}{3pt}
+\setlength{\tabcolsep}{5pt}
+\setlength{\shadeoh}{\tabcolsep}\addtolength{\shadeoh}{0.4pt}
 \caption{Simpler measurements from the same keypoints and windows (test):
 AUC / BA and median within-hold IQR of per-frame values. Shading: rank
 within a column (darkest is best).
@@ -82,14 +83,14 @@ Bold: ours (no 3D for depth).}
 & AUC & BA & AUC & BA & AUC & BA \\
 \hline
 2D, all frames & 0.845 & 0.730 & 0.772 & 0.639 & 0.769 & 0.559 \\
-2D, best frame & \cellcolor{tabblue!15}0.902 & \cellcolor{tabblue!30}0.800
-& \cellcolor{tabblue!15}0.933 & \cellcolor{tabblue!30}0.870
-& \cellcolor{tabblue!30}\textbf{0.903} & \cellcolor{tabblue!30}\textbf{0.662} \\
-3D, all frames & \cellcolor{tabblue!30}\textbf{0.910} & \cellcolor{tabblue!15}\textbf{0.785}
-& \cellcolor{tabblue!30}\textbf{0.964} & \cellcolor{tabblue!15}\textbf{0.859} & -- & -- \\
+2D, best frame & \shade{15}0.902 & \shade{30}0.800
+& \shade{15}0.933 & \shade{30}0.870
+& \shade{30}\textbf{0.903} & \shadelast{30}\textbf{0.662} \\
+3D, all frames & \shade{30}\textbf{0.910} & \shade{15}\textbf{0.785}
+& \shade{30}\textbf{0.964} & \shade{15}\textbf{0.859} & -- & -- \\
 \hline
 IQR, 2D & \multicolumn{2}{c}{0.11} & \multicolumn{2}{c}{22$^\circ$} & \multicolumn{2}{c}{0.14} \\
-IQR, 3D & \multicolumn{2}{c}{\cellcolor{tabblue!30}0.07} & \multicolumn{2}{c}{\cellcolor{tabblue!30}7$^\circ$}
+IQR, 3D & \multicolumn{2}{c}{\shade{30}0.07} & \multicolumn{2}{c}{\shade{30}7$^\circ$}
 & \multicolumn{2}{c}{--} \\
 \hline
 \end{tabular}
