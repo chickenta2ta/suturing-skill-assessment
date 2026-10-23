@@ -1,53 +1,40 @@
 \section{Introduction}
 \label{sec:intro}
 
-Surgeons learn by being assessed, and suturing, passing a curved needle
-through tissue with an instrument, is among the skills assessed most. An
-expert watching a trainee can tell a good stitch from a poor one, but such
-review takes time, varies between reviewers, and ``poor'' alone does not say
-what to change. EASE~\cite{Haque2022} is a rating tool for robotic suturing
-that assesses each sub-skill against a defined criterion, such as where along
-the needle it is held or at what angle, so that a score points to what to
-correct. Rating every stitch by hand, however, takes expert time that
-training rarely has to spare.
+Detailed expert assessment of surgical skills can identify specific technical
+errors, but it is time-consuming and ratings may vary across reviewers. The
+End-to-End Assessment of Suturing Expertise (EASE)~\cite{Haque2022} provides
+a structured rubric for robotic suturing, with explicit criteria for
+individual sub-skills. These criteria indicate what to improve, but scoring
+individual stitches manually is labor-intensive.
 
-Automated assessment from surgical video has moved from classifying
-expertise on JIGSAWS~\cite{Funke2019,Liu2021} to clinically defined rating
-tools~\cite{Kiyasseh2023}; for EASE, models trained on annotated stitches
-predict each sub-skill as good or poor~\cite{Cui2024,Deo2026}, and a
-general-purpose vision--language model (VLM) can be asked for a score
-directly. In both cases the score comes out of a black box: attention maps
-and evidence frames show where the model
-looked~\cite{IsmailFawaz2019,Kiyasseh2023b}, but not how the score was
-reached. Instrument keypoints and
-masks can be detected in surgical video~\cite{Ghanekar2025}, and the 3D pose
-of a suture needle has been estimated, but with stereo cameras, calibration,
-or trained detectors~\cite{Chiu2022,Li2024}.
+Automated assessment from surgical video has progressed from expertise
+classification on JIGSAWS~\cite{Funke2019,Liu2021} to activity-specific skill
+assessment~\cite{Kiyasseh2023} and EASE sub-skill
+scoring~\cite{Cui2024,Deo2026}. These models, as well as general-purpose
+vision--language models (VLMs), can predict ratings directly without
+explicitly measuring the quantities underlying the assessment criteria.
+Interpretability methods highlight influential kinematic
+segments~\cite{IsmailFawaz2019} or relevant video
+frames~\cite{Kiyasseh2023b}, while geometric methods track instrument
+keypoints~\cite{Ghanekar2025} or estimate 3D needle
+poses~\cite{Chiu2022,Li2024}. However, these approaches do not translate
+needle--instrument geometry into quantitative measures linked to explicit
+assessment criteria.
 
-Our observation is that EASE defines its criteria geometrically: the grasp
-position along the needle, the angle between the needle and the jaws, and
-the depth of the needle in the jaws. We therefore measure rather than
-predict: we measure what the criteria define and score the measurements by
-the criteria (Fig.~\ref{fig:overview}). Events detected
-in the video divide it into stitches and into the window that each sub-skill
-refers to; within it, per-frame keypoints and a needle mask give the
-geometry, which is measured in 3D from the monocular video and scored by the
-EASE criteria. Every score thus comes with the frames and the value behind
-it, and can be verified.
+EASE defines several needle-hold criteria geometrically: the grasp position
+along the needle, the angle between the needle and the instrument jaws, and
+the grasp depth within the jaws. We therefore measure rather than predict:
+the proposed method measures these quantities from monocular suturing videos
+within the relevant evaluation intervals and maps them to EASE scores
+(Fig.~\ref{fig:overview}).
 
 Our contributions are threefold. (1) A measurement-based formulation of EASE
-scoring: a score is a geometric quantity compared with the EASE criterion,
-measured within the event-defined window in which the hold does not change,
-so that every frame in it is a valid observation; the perception that
-provides the keypoints and masks is replaceable, and this paper implements
-it without training any model, with a general-purpose VLM and a few
-examples.
-(2) Geometric measurement from monocular video without calibration: we fit
-one 3D arc to the needle across the whole video to locate the grasp on it,
-lift the needle and the jaws to 3D for the hold angle using the fact that
-projection only shortens, and read the hold depth as a ratio along the jaws,
-which projection preserves. (3) Validation on JIGSAWS~\cite{Gao2014} with surgeons split
-between development and test: run fully automatically from the raw video,
-the method reproduces a surgeon's EASE scores at least as well as direct
-grading by a state-of-the-art VLM given favorable conditions, and most of
-its errors lie near a threshold.
+scoring that maps geometric measurements from event-defined windows to EASE
+scores, with each score traceable to its frames, keypoints, and measured
+values. The perception module is replaceable and requires no task-specific
+training. (2) Calibration-free monocular estimation of the three needle-hold
+measures using 3D needle-arc fitting and weak-perspective geometry. (3)
+Surgeon-disjoint validation on JIGSAWS~\cite{Gao2014}, showing that fully
+automated raw-video scoring matches or exceeds direct VLM grading, even with
+annotated windows and scored examples given to the VLM.
