@@ -3,25 +3,19 @@
 % appended to the title block that spconf typesets with \twocolumn[...].
 \makeatletter
 \g@addto@macro\@maketitle{%
-  \begin{center}
-  \includegraphics{figures/overview}%
+  \noindent\includegraphics{figures/overview}\par
   \refstepcounter{figure}%
   \def\@captype{figure}%
-  \@makecaption{\fnum@figure}{Overview of the method. (a) Perception. Events are detected
-    in the monocular suturing video; they divide it into stitches and into the window
-    that each sub-skill refers to. Top: frames of one stitch; the reposition end and the
-    entry (red frames) delimit the hold window (gray). Bottom: enlarged frames of the
-    window with the detected keypoints and needle mask; $t$ is the time from the
-    reposition end in seconds. (b) Measurement and scoring, for the same stitch. For
-    each sub-skill, the measured geometry is drawn on a frame of the window (blue: what
-    is measured; orange: the needle; purple: the jaws), and the estimate of every frame
-    of the window is plotted over time against the EASE score ranges. Cyan: the
-    estimate of each frame; blue with a white edge: the value used, namely the ratio
-    fitted to all frames of the window at once (cyan: fitted to each frame alone), the
-    median of the angles, and the depth in the frame in which the jaws appear longest,
-    which is the frame shown. Gray: the range of the EASE ground truth of this stitch;
-    the labels at the right are the scores of the ranges.}%
+  \@makecaption{\fnum@figure}{Overview of the method. (a) Perception. Detected events
+    divide the monocular video into stitches and into the window of each sub-skill.
+    Top: one stitch; the reposition end and the entry (red) delimit the hold window
+    (gray). Bottom: frames of the window with keypoints and needle mask; $t$ is the
+    time from the reposition end. (b) Measurement and scoring of the same stitch. Per
+    sub-skill: the measured geometry (blue) on one frame, and the estimate of each
+    frame over time (cyan) against the EASE score ranges. White-edged blue: the value
+    used (the ratio fitted to all frames at once, the median angle, and the depth in
+    the frame shown, where the jaws appear longest). Gray: the range of this stitch's
+    EASE ground truth; its scores at the right.}%
   \label{fig:overview}
-  \end{center}
   \vskip 1em}
 \makeatother
