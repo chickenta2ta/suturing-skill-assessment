@@ -1,49 +1,26 @@
 \section{Discussion and conclusion}
 \label{sec:discussion_conclusion}
 
-The results show that EASE scores can be reproduced from a monocular suturing
-video by measuring what EASE defines, rather than by asking a model for a
-score. Even against a state-of-the-art VLM given the annotated windows and
-scored examples, our method is at least on par for every hold sub-skill and
-clearly better for Needle Hold Angle, and detecting the events as well hardly
-changes the results. The gain for Needle Hold Angle follows from the design:
-the angle seen in the image changes with the view, so a judgment from
-appearance misses poor holds, whereas the angle lifted to 3D does not depend
-on how the needle and the instrument happen to be tilted.
+Geometric measurements from monocular suturing videos reproduced EASE
+needle-hold scores, matching or exceeding a state-of-the-art VLM on all
+three sub-skills even when it received annotated windows and scored examples.
+The advantage was clearest for Needle Hold Angle, possibly because 3D
+estimation is less viewpoint-dependent than judging 2D appearance. Automatic
+event detection had little effect on performance.
 
-Fig.~\ref{fig:values} shows what lies behind each score. For every
-ground-truth score, the measured values gather within the range that EASE
-gives that score, and most wrong scores lie just outside it: 15 of the 17
-wrong scores of Needle Hold Ratio are within 0.05 of a threshold, and 9 of the
-10 of Needle Hold Angle within 10$^\circ$. Most errors are thus near misses at
-the boundary between two scores. Because each score is a value on the scale of
-EASE, such a case can be checked by looking at the frames and the points it was
-measured from. Depth of Needle Hold has more errors away from a threshold, 8 of
-17, likely because the jaws span only a few tens of pixels, so that a small
-shift of a keypoint moves the depth across a threshold.
+Most errors occurred near EASE score thresholds, though Depth of Needle Hold
+also showed errors farther away, possibly because jaws spanning only a few
+tens of pixels amplify keypoint errors. Even incorrect scores can be traced to
+their underlying measurements, source frames, and keypoints. The method
+requires no task-specific training: a replaceable general-purpose VLM handles
+perception, while geometry and scoring follow EASE criteria. This may ease
+application to other suturing videos with limited annotations.
 
-The method needs no training on annotated surgical data. The events,
-keypoints, and masks come from a general-purpose VLM given a few examples, and
-any detector could take its place, while the geometry and the scoring rules
-follow EASE and do not depend on the data. This should ease the transfer to
-other suturing videos, for which annotated data are scarce.
+Limitations include a single physician rater: although EASE itself has
+validated inter-rater reliability~\cite{Haque2022}, agreement on our data was
+not measured. The test set covers only four held-out surgeons, and keypoint
+and mask detection may degrade in vivo, although perception can be improved
+independently.
 
-This study has limitations. The EASE scores were given by a single licensed
-surgeon. EASE has shown moderately high inter-rater reliability among trained
-raters~\cite{Haque2022}, but the agreement on our data was not measured, and
-confirming the results with several raters remains future work. Because the
-eight surgeons of JIGSAWS were split to prevent leakage, the test set covers
-four independent surgeons, each with several trials; a larger and more varied
-group of surgeons is needed to confirm that the results generalize. Finally,
-the videos show suturing on a bench-top model, which is easier to observe than
-surgery in vivo, where bleeding, tissue deformation, smoke, and occlusion make
-the keypoints and masks harder to obtain. Since the framework leaves the
-perception replaceable, such videos can be addressed by strengthening that
-part alone.
-
-We presented an event-guided method that scores the EASE needle-handling
-sub-skills by measuring, within the window each sub-skill refers to, the
-quantities that EASE defines. It reproduces the EASE scores of a surgeon at
-least as well as direct grading by a state-of-the-art VLM, and every score can
-be traced back to the frames and the value it was measured from.
-
+In conclusion, event-guided measurements in sub-skill-specific windows map
+EASE-defined quantities to traceable needle-handling scores.
