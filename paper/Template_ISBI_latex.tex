@@ -21,14 +21,15 @@
 \setlength{\intextsep}{10pt plus 2pt minus 2pt}
 
 % Space above a figure caption: 6pt instead of the 10pt of spconf. Table
-% captions keep the 10pt.
+% captions keep the 10pt and get 4pt below, between the caption and the table.
 \makeatletter
 \long\def\@makecaption#1#2{
  \def\@tempa{figure}\ifx\@captype\@tempa \vskip 6pt\else \vskip 10pt\fi
  \setbox\@tempboxa\hbox{#1. #2}
  \ifdim \wd\@tempboxa >\hsize #1. #2\par \else \hbox
 to\hsize{\hfil\box\@tempboxa\hfil}
- \fi}
+ \fi
+ \def\@tempa{table}\ifx\@captype\@tempa \vskip 4pt\fi}
 \makeatother
 
 % Space around headings: a little less than the article defaults
