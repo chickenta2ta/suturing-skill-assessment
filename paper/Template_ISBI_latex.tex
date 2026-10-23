@@ -14,17 +14,17 @@
 
 % Space between floats and text (the template leaves these at the article
 % defaults: 20pt between a float and the text, 12pt between two floats).
-\setlength{\textfloatsep}{12pt plus 2pt minus 2pt}
-\setlength{\dbltextfloatsep}{12pt plus 2pt minus 2pt}
-\setlength{\floatsep}{10pt plus 2pt minus 2pt}
-\setlength{\dblfloatsep}{10pt plus 2pt minus 2pt}
+\setlength{\textfloatsep}{10pt plus 2pt minus 2pt}
+\setlength{\dbltextfloatsep}{10pt plus 2pt minus 2pt}
+\setlength{\floatsep}{8pt plus 2pt minus 2pt}
+\setlength{\dblfloatsep}{8pt plus 2pt minus 2pt}
 \setlength{\intextsep}{10pt plus 2pt minus 2pt}
 
-% Space above a figure caption: 6pt instead of the 10pt of spconf. Table
-% captions keep the 10pt and get 4pt below, between the caption and the table.
+% Space above a caption: 6pt instead of the 10pt of spconf. Table captions
+% also get 4pt below, between the caption and the table.
 \makeatletter
 \long\def\@makecaption#1#2{
- \def\@tempa{figure}\ifx\@captype\@tempa \vskip 6pt\else \vskip 10pt\fi
+ \vskip 6pt
  \setbox\@tempboxa\hbox{#1. #2}
  \ifdim \wd\@tempboxa >\hsize #1. #2\par \else \hbox
 to\hsize{\hfil\box\@tempboxa\hfil}
