@@ -60,11 +60,10 @@ needle mask and visible tail. The residual pixel discrepancy is
 $E_t(r,\theta,s_i)$. Since the same needle is used throughout a video, $r$
 and $\theta$ are shared across stitches and estimated jointly with their grasp
 positions,
-\begin{equation}
+\begin{equation*}
 \hat{r},\hat{\theta},\{\hat{s}_i\}=\arg\min_{r,\theta,\{s_i\}}
 \sum_i\frac{1}{|F_i|}\sum_{t\in F_i}E_t(r,\theta,s_i),
-\label{eq:arc}
-\end{equation}
+\end{equation*}
 where $F_i$ is the set of frames of $W_i$ in which the needle tip and mask are
 observed. No needle size, needle shape, or camera calibration is given; the
 stitches with a clearly visible needle constrain its shape for the others.
@@ -91,15 +90,14 @@ respectively. Foreshortening gives the magnitude of each depth component,
 while its sign is assigned assuming the tissue-facing needle tip is farther
 from the camera than the grasp point and the jaw base is nearer than the jaw
 tip. Each segment is lifted to 3D as
-\begin{equation}
+\begin{equation*}
 \begin{aligned}
 \tilde{\mathbf{u}}_t&=\Bigl(\mathbf{u}_t,\,
 \sqrt{\max(0,L_u^2-\|\mathbf{u}_t\|^2)}\Bigr),\\
 \tilde{\mathbf{v}}_t&=\Bigl(\mathbf{v}_t,\,
 -\sqrt{\max(0,L_v^2-\|\mathbf{v}_t\|^2)}\Bigr),
 \end{aligned}
-\label{eq:lift}
-\end{equation}
+\end{equation*}
 and the hold angle $\alpha_i$ is the median over the frames of the angle
 between $\tilde{\mathbf{u}}_t$ and $\tilde{\mathbf{v}}_t$.
 
