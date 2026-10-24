@@ -12,6 +12,7 @@
 | 1 試行 4 針 | `annotations/events_and_ease.json`（公開リポ）: 使った 35 試行で needle_withdrawal_end が各 4（計 140） |
 | 開発用 B, E, F, I（術者ごとに 4 試行 = 16 試行、64 針。few-shot の 2 本を除き GRS 上位 2・下位 2 を選ぶので F と I の各 1 試行は未使用）、テスト用 C, D, G, H（全 19 試行、76 針） | 公開リポ `configs/split.yaml`、`docs/dataset.md`、`annotations/events_and_ease.json` |
 | few-shot の 2 試行（B001, E003）は他に使わない | 公開リポ `docs/dataset.md` |
+| 医師がモデルの出力を見ずに（blinded to model outputs）全針のイベントと EASE を capture1 だけから注釈 | アノテータ本人の申告（2026-10-24 の改稿案）。注釈は `annotations/events_and_ease.json`（公開リポ） |
 
 ## EASE の基準（2.1、2.3–2.5）
 

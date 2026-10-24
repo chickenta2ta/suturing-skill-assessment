@@ -35,9 +35,9 @@ applicability to video-only settings, we use only monocular endoscopic video
 To prevent data leakage, surgeons are split into development (four trials each, 64 stitches)
 and test sets (all 19 trials, 76 stitches), each with one expert, one
 intermediate, and two novices. All design choices, few-shot examples,
-and parameters are fixed on the development set before a single test
-evaluation. A physician annotated events and EASE scores~\cite{Haque2022} for every
-stitch using only the capture1 video.
+and parameters are fixed on the development set before one test
+evaluation. A physician, blinded to model outputs, annotated events and EASE
+scores~\cite{Haque2022} for every stitch from capture1 alone.
 
 \subsection{Implementation}
 \label{ssec:implementation}
